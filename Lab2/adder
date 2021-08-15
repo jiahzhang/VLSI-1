@@ -1,0 +1,581 @@
+`timescale 1ns / 1ns
+
+
+`timescale 1ns / 1ns
+
+
+`timescale 1ns / 1ns
+
+
+`timescale 1ns / 1ns
+module gray_cell ( G_i_j, G_i_k, .cdsTerm1(cdsNet0), P_i_k );
+
+output  G_i_j;
+
+input  G_i_k, cdsNet0, P_i_k;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "gray_cell";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+OR2X2 I0 ( .Y(G_i_j), .A(G_i_k), .B(net10));
+NAND3X1 I1 ( .Y(net11), .A(P_i_k), .B(cdsNet0), .C(1'b1));
+INVX1 I2 ( .Y(net10), .A(net11));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module black_cell ( G_i_j, P_i_j, G_i_k, .cdsTerm2(cdsNet1), P_i_k,
+     .cdsTerm3(cdsNet0) );
+
+output  G_i_j, P_i_j;
+
+input  G_i_k, cdsNet1, P_i_k, cdsNet0;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "black_cell";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+INVX1 I5 ( .Y(P_i_j), .A(net15));
+NAND3X1 I1 ( .Y(net15), .A(P_i_k), .B(cdsNet0), .C(1'b1));
+gray_cell I4 ( .G_i_j(G_i_j), .cdsTerm1(cdsNet1), .P_i_k(P_i_k),
+     .G_i_k(G_i_k));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module adder_generate ( G, A, B );
+
+output  G;
+
+input  A, B;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "adder_generate";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I0 ( .Y(net7), .A(A), .B(B), .C(1'b1));
+INVX1 I2 ( .Y(G), .A(net7));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module adder_propagate ( P, A, B );
+
+output  P;
+
+input  A, B;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "adder_propagate";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I2 ( .Y(net13), .A(net11), .B(net10), .C(1'b1));
+NAND3X1 I0 ( .Y(net11), .A(A), .B(B), .C(1'b1));
+OR2X2 I1 ( .Y(net10), .A(A), .B(B));
+INVX1 I3 ( .Y(P), .A(net13));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+
+
+`timescale 1ns / 1ns
+module buffer ( out, in );
+
+output  out;
+
+input  in;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "buffer";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+INVX1 I0 ( .Y(net5), .A(in));
+INVX4 I1 ( .Y(out), .A(net5));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module xor_ ( S, C_prev, P );
+
+output  S;
+
+input  C_prev, P;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "xor";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I1 ( .Y(net13), .A(net11), .B(net10), .C(1'b1));
+NAND3X1 I0 ( .Y(net11), .A(P), .B(C_prev), .C(1'b1));
+OR2X2 I2 ( .Y(net10), .A(P), .B(C_prev));
+INVX4 I3 ( .Y(S), .A(net13));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module kogge_stone_adder ( Cout, S, A, B, Cin );
+
+output  Cout;
+
+input  Cin;
+
+output [15:0]  S;
+
+input [15:0]  A;
+input [15:0]  B;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "kogge_stone_adder";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+black_cell I107 ( .P_i_j(net0235), .G_i_j(net0238), .cdsTerm3(net0133),
+     .cdsTerm2(net214), .P_i_k(net217), .G_i_k(net218));
+black_cell I104 ( .P_i_j(net0133), .G_i_j(net214), .cdsTerm3(net0198),
+     .cdsTerm2(net172), .P_i_k(net148), .G_i_k(net145));
+black_cell I73 ( .P_i_j(net212), .G_i_j(net213), .cdsTerm3(net169),
+     .cdsTerm2(net166), .P_i_k(net141), .G_i_k(net138));
+black_cell I72 ( .P_i_j(net211), .G_i_j(net210), .cdsTerm3(net162),
+     .cdsTerm2(net159), .P_i_k(net134), .G_i_k(net131));
+black_cell I71 ( .P_i_j(net208), .G_i_j(net209), .cdsTerm3(net155),
+     .cdsTerm2(net152), .P_i_k(net127), .G_i_k(net124));
+black_cell I70 ( .P_i_j(net207), .G_i_j(net206), .cdsTerm3(net148),
+     .cdsTerm2(net145), .P_i_k(net120), .G_i_k(net117));
+black_cell I69 ( .P_i_j(net204), .G_i_j(net205), .cdsTerm3(net141),
+     .cdsTerm2(net138), .P_i_k(net225), .G_i_k(net226));
+black_cell I68 ( .P_i_j(net203), .G_i_j(net202), .cdsTerm3(net134),
+     .cdsTerm2(net131), .P_i_k(net223), .G_i_k(net224));
+black_cell I67 ( .P_i_j(net201), .G_i_j(net200), .cdsTerm3(net127),
+     .cdsTerm2(net124), .P_i_k(net221), .G_i_k(net222));
+black_cell I66 ( .P_i_j(net217), .G_i_j(net218), .cdsTerm3(net120),
+     .cdsTerm2(net117), .P_i_k(net219), .G_i_k(net220));
+black_cell I99 ( .P_i_j(net0198), .G_i_j(net172), .cdsTerm3(net0223),
+     .cdsTerm2(net192), .P_i_k(net185), .G_i_k(net183));
+black_cell I61 ( .P_i_j(net169), .G_i_j(net166), .cdsTerm3(net190),
+     .cdsTerm2(net188), .P_i_k(net180), .G_i_k(net178));
+black_cell I60 ( .P_i_j(net162), .G_i_j(net159), .cdsTerm3(net185),
+     .cdsTerm2(net183), .P_i_k(net175), .G_i_k(net173));
+black_cell I59 ( .P_i_j(net155), .G_i_j(net152), .cdsTerm3(net180),
+     .cdsTerm2(net178), .P_i_k(net170), .G_i_k(net167));
+black_cell I58 ( .P_i_j(net148), .G_i_j(net145), .cdsTerm3(net175),
+     .cdsTerm2(net173), .P_i_k(net163), .G_i_k(net160));
+black_cell I57 ( .P_i_j(net141), .G_i_j(net138), .cdsTerm3(net170),
+     .cdsTerm2(net167), .P_i_k(net156), .G_i_k(net153));
+black_cell I56 ( .P_i_j(net134), .G_i_j(net131), .cdsTerm3(net163),
+     .cdsTerm2(net160), .P_i_k(net149), .G_i_k(net146));
+black_cell I55 ( .P_i_j(net127), .G_i_j(net124), .cdsTerm3(net156),
+     .cdsTerm2(net153), .P_i_k(net142), .G_i_k(net139));
+black_cell I54 ( .P_i_j(net120), .G_i_j(net117), .cdsTerm3(net149),
+     .cdsTerm2(net146), .P_i_k(net135), .G_i_k(net132));
+black_cell I53 ( .P_i_j(net225), .G_i_j(net226), .cdsTerm3(net142),
+     .cdsTerm2(net139), .P_i_k(net128), .G_i_k(net125));
+black_cell I52 ( .P_i_j(net223), .G_i_j(net224), .cdsTerm3(net135),
+     .cdsTerm2(net132), .P_i_k(net121), .G_i_k(net118));
+black_cell I51 ( .P_i_j(net221), .G_i_j(net222), .cdsTerm3(net128),
+     .cdsTerm2(net125), .P_i_k(net229), .G_i_k(net230));
+black_cell I50 ( .P_i_j(net219), .G_i_j(net220), .cdsTerm3(net121),
+     .cdsTerm2(net118), .P_i_k(net227), .G_i_k(net228));
+black_cell I98 ( .P_i_j(net0223), .G_i_j(net192), .cdsTerm3(net199),
+     .cdsTerm2(net198), .P_i_k(net197), .G_i_k(net196));
+black_cell I47 ( .P_i_j(net190), .G_i_j(net188), .cdsTerm3(net197),
+     .cdsTerm2(net196), .P_i_k(net194), .G_i_k(net193));
+black_cell I46 ( .P_i_j(net185), .G_i_j(net183), .cdsTerm3(net194),
+     .cdsTerm2(net193), .P_i_k(net191), .G_i_k(net189));
+black_cell I45 ( .P_i_j(net180), .G_i_j(net178), .cdsTerm3(net191),
+     .cdsTerm2(net189), .P_i_k(net186), .G_i_k(net184));
+black_cell I44 ( .P_i_j(net175), .G_i_j(net173), .cdsTerm3(net186),
+     .cdsTerm2(net184), .P_i_k(net181), .G_i_k(net179));
+black_cell I43 ( .P_i_j(net170), .G_i_j(net167), .cdsTerm3(net181),
+     .cdsTerm2(net179), .P_i_k(net176), .G_i_k(net174));
+black_cell I42 ( .P_i_j(net163), .G_i_j(net160), .cdsTerm3(net176),
+     .cdsTerm2(net174), .P_i_k(net171), .G_i_k(net168));
+black_cell I41 ( .P_i_j(net156), .G_i_j(net153), .cdsTerm3(net171),
+     .cdsTerm2(net168), .P_i_k(net164), .G_i_k(net161));
+black_cell I40 ( .P_i_j(net149), .G_i_j(net146), .cdsTerm3(net164),
+     .cdsTerm2(net161), .P_i_k(net157), .G_i_k(net154));
+black_cell I39 ( .P_i_j(net142), .G_i_j(net139), .cdsTerm3(net157),
+     .cdsTerm2(net154), .P_i_k(net150), .G_i_k(net147));
+black_cell I38 ( .P_i_j(net135), .G_i_j(net132), .cdsTerm3(net150),
+     .cdsTerm2(net147), .P_i_k(net143), .G_i_k(net140));
+black_cell I37 ( .P_i_j(net128), .G_i_j(net125), .cdsTerm3(net143),
+     .cdsTerm2(net140), .P_i_k(net136), .G_i_k(net133));
+black_cell I36 ( .P_i_j(net121), .G_i_j(net118), .cdsTerm3(net136),
+     .cdsTerm2(net133), .P_i_k(net129), .G_i_k(net126));
+black_cell I35 ( .P_i_j(net229), .G_i_j(net230), .cdsTerm3(net129),
+     .cdsTerm2(net126), .P_i_k(net122), .G_i_k(net119));
+black_cell I6 ( .P_i_j(net227), .G_i_j(net228), .cdsTerm3(net122),
+     .cdsTerm2(net119), .P_i_k(net115), .G_i_k(net231));
+adder_generate I33 ( .G(net198), .A(A[0]), .B(B[0]));
+adder_generate I32 ( .G(net196), .A(A[1]), .B(B[1]));
+adder_generate I29 ( .G(net193), .A(A[2]), .B(B[2]));
+adder_generate I28 ( .G(net189), .A(A[3]), .B(B[3]));
+adder_generate I25 ( .G(net184), .A(A[4]), .B(B[4]));
+adder_generate I24 ( .G(net179), .A(A[5]), .B(B[5]));
+adder_generate I21 ( .G(net174), .A(A[6]), .B(B[6]));
+adder_generate I20 ( .G(net168), .A(A[7]), .B(B[7]));
+adder_generate I17 ( .G(net161), .A(A[8]), .B(B[8]));
+adder_generate I16 ( .G(net154), .A(A[9]), .B(B[9]));
+adder_generate I13 ( .G(net147), .A(A[10]), .B(B[10]));
+adder_generate I12 ( .G(net140), .A(A[11]), .B(B[11]));
+adder_generate I9 ( .G(net133), .A(A[12]), .B(B[12]));
+adder_generate I7 ( .G(net126), .A(A[13]), .B(B[13]));
+adder_generate I3 ( .G(net119), .A(A[14]), .B(B[14]));
+adder_generate I2 ( .G(net231), .A(A[15]), .B(B[15]));
+adder_propagate I34 ( .P(net199), .A(A[0]), .B(B[0]));
+adder_propagate I31 ( .P(net197), .A(A[1]), .B(B[1]));
+adder_propagate I30 ( .P(net194), .A(A[2]), .B(B[2]));
+adder_propagate I27 ( .P(net191), .A(A[3]), .B(B[3]));
+adder_propagate I26 ( .P(net186), .A(A[4]), .B(B[4]));
+adder_propagate I23 ( .P(net181), .A(A[5]), .B(B[5]));
+adder_propagate I22 ( .P(net176), .A(A[6]), .B(B[6]));
+adder_propagate I19 ( .P(net171), .A(A[7]), .B(B[7]));
+adder_propagate I18 ( .P(net164), .A(A[8]), .B(B[8]));
+adder_propagate I15 ( .P(net157), .A(A[9]), .B(B[9]));
+adder_propagate I14 ( .P(net150), .A(A[10]), .B(B[10]));
+adder_propagate I11 ( .P(net143), .A(A[11]), .B(B[11]));
+adder_propagate I10 ( .P(net136), .A(A[12]), .B(B[12]));
+adder_propagate I8 ( .P(net129), .A(A[13]), .B(B[13]));
+adder_propagate I5 ( .P(net122), .A(A[14]), .B(B[14]));
+adder_propagate I4 ( .P(net115), .A(A[15]), .B(B[15]));
+gray_cell I108 ( .G_i_j(Cout), .cdsTerm1(Cin), .P_i_k(net0235),
+     .G_i_k(net0238));
+gray_cell I106 ( .G_i_j(net0246), .cdsTerm1(Cin), .P_i_k(net0133),
+     .G_i_k(net214));
+gray_cell I91 ( .G_i_j(net0245), .cdsTerm1(net195), .P_i_k(net212),
+     .G_i_k(net213));
+gray_cell I90 ( .G_i_j(net0244), .cdsTerm1(net0178), .P_i_k(net211),
+     .G_i_k(net210));
+gray_cell I89 ( .G_i_j(net0243), .cdsTerm1(net0170), .P_i_k(net208),
+     .G_i_k(net209));
+gray_cell I88 ( .G_i_j(net0242), .cdsTerm1(net0162), .P_i_k(net207),
+     .G_i_k(net206));
+gray_cell I87 ( .G_i_j(net0241), .cdsTerm1(net116), .P_i_k(net204),
+     .G_i_k(net205));
+gray_cell I86 ( .G_i_j(net0240), .cdsTerm1(net216), .P_i_k(net203),
+     .G_i_k(net202));
+gray_cell I85 ( .G_i_j(net0239), .cdsTerm1(net215), .P_i_k(net201),
+     .G_i_k(net200));
+gray_cell I100 ( .G_i_j(net0208), .cdsTerm1(Cin), .P_i_k(net0223),
+     .G_i_k(net192));
+gray_cell I97 ( .G_i_j(net0226), .cdsTerm1(Cin), .P_i_k(net199),
+     .G_i_k(net198));
+gray_cell I77 ( .G_i_j(net116), .cdsTerm1(net195), .P_i_k(net169),
+     .G_i_k(net166));
+gray_cell I76 ( .G_i_j(net216), .cdsTerm1(net0208), .P_i_k(net162),
+     .G_i_k(net159));
+gray_cell I75 ( .G_i_j(net215), .cdsTerm1(net177), .P_i_k(net155),
+     .G_i_k(net152));
+gray_cell I103 ( .G_i_j(net0162), .cdsTerm1(Cin), .P_i_k(net0198),
+     .G_i_k(net172));
+gray_cell I64 ( .G_i_j(net177), .cdsTerm1(net0226), .P_i_k(net190),
+     .G_i_k(net188));
+buffer I105 ( .out(net0236), .in(net0162));
+buffer I102 ( .out(net0178), .in(net0208));
+buffer I101 ( .out(net195), .in(net0226));
+buffer I95 ( .out(net0249), .in(net116));
+buffer I94 ( .out(net0248), .in(net216));
+buffer I93 ( .out(net0247), .in(net215));
+buffer I83 ( .out(net0170), .in(net177));
+xor_ I124 ( .S(S[15]), .C_prev(net0239), .P(net115));
+xor_ I123 ( .S(S[14]), .C_prev(net0240), .P(net122));
+xor_ I122 ( .S(S[13]), .C_prev(net0241), .P(net129));
+xor_ I121 ( .S(S[12]), .C_prev(net0242), .P(net136));
+xor_ I120 ( .S(S[11]), .C_prev(net0243), .P(net143));
+xor_ I119 ( .S(S[10]), .C_prev(net0244), .P(net150));
+xor_ I118 ( .S(S[9]), .C_prev(net0245), .P(net157));
+xor_ I117 ( .S(S[8]), .C_prev(net0246), .P(net164));
+xor_ I116 ( .S(S[7]), .C_prev(net0247), .P(net171));
+xor_ I115 ( .S(S[6]), .C_prev(net0248), .P(net176));
+xor_ I114 ( .S(S[5]), .C_prev(net0249), .P(net181));
+xor_ I113 ( .S(S[4]), .C_prev(net0236), .P(net186));
+xor_ I112 ( .S(S[3]), .C_prev(net0170), .P(net191));
+xor_ I111 ( .S(S[2]), .C_prev(net0178), .P(net194));
+xor_ I110 ( .S(S[1]), .C_prev(net195), .P(net197));
+xor_ I109 ( .S(S[0]), .C_prev(Cin), .P(net199));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module mux ( Y, S, S0, S1 );
+
+output  Y;
+
+input  S, S0, S1;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "mux";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I1 ( .Y(net13), .A(1'b1), .B(S0), .C(net08));
+NAND3X1 I0 ( .Y(net14), .A(S1), .B(1'b1), .C(S));
+INVX1 I6 ( .Y(net08), .A(S));
+INVX1 I3 ( .Y(net12), .A(net13));
+INVX1 I2 ( .Y(net11), .A(net14));
+OR2X2 I4 ( .Y(Y), .A(net11), .B(net12));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module mux_16 ( Y, S, S0, S1 );
+
+
+input  S;
+
+output [15:0]  Y;
+
+input [15:0]  S0;
+input [15:0]  S1;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "mux_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I31 ( .Y(net60), .A(S0[0]), .B(net7), .C(1'b1));
+NAND3X1 I30 ( .Y(net61), .A(S1[0]), .B(S), .C(1'b1));
+NAND3X1 I29 ( .Y(net64), .A(S0[1]), .B(net7), .C(1'b1));
+NAND3X1 I28 ( .Y(net62), .A(S1[1]), .B(S), .C(1'b1));
+NAND3X1 I27 ( .Y(net63), .A(S0[2]), .B(net7), .C(1'b1));
+NAND3X1 I26 ( .Y(net65), .A(S1[2]), .B(S), .C(1'b1));
+NAND3X1 I25 ( .Y(net66), .A(S0[3]), .B(net7), .C(1'b1));
+NAND3X1 I24 ( .Y(net74), .A(S1[3]), .B(S), .C(1'b1));
+NAND3X1 I23 ( .Y(net73), .A(S0[4]), .B(net7), .C(1'b1));
+NAND3X1 I22 ( .Y(net72), .A(S1[4]), .B(S), .C(1'b1));
+NAND3X1 I21 ( .Y(net71), .A(S0[5]), .B(net7), .C(1'b1));
+NAND3X1 I20 ( .Y(net70), .A(S1[5]), .B(S), .C(1'b1));
+NAND3X1 I19 ( .Y(net69), .A(S0[6]), .B(net7), .C(1'b1));
+NAND3X1 I18 ( .Y(net68), .A(S1[6]), .B(S), .C(1'b1));
+NAND3X1 I17 ( .Y(net67), .A(S0[7]), .B(net7), .C(1'b1));
+NAND3X1 I16 ( .Y(net77), .A(S1[7]), .B(S), .C(1'b1));
+NAND3X1 I15 ( .Y(net76), .A(S0[8]), .B(net7), .C(1'b1));
+NAND3X1 I14 ( .Y(net75), .A(S1[8]), .B(S), .C(1'b1));
+NAND3X1 I13 ( .Y(net53), .A(S0[9]), .B(net7), .C(1'b1));
+NAND3X1 I12 ( .Y(net52), .A(S1[9]), .B(S), .C(1'b1));
+NAND3X1 I11 ( .Y(net51), .A(S0[10]), .B(net7), .C(1'b1));
+NAND3X1 I10 ( .Y(net50), .A(S1[10]), .B(S), .C(1'b1));
+NAND3X1 I9 ( .Y(net49), .A(S0[11]), .B(net7), .C(1'b1));
+NAND3X1 I8 ( .Y(net48), .A(S1[11]), .B(S), .C(1'b1));
+NAND3X1 I7 ( .Y(net47), .A(S0[12]), .B(net7), .C(1'b1));
+NAND3X1 I6 ( .Y(net46), .A(S1[12]), .B(S), .C(1'b1));
+NAND3X1 I5 ( .Y(net59), .A(S0[13]), .B(net7), .C(1'b1));
+NAND3X1 I4 ( .Y(net58), .A(S1[13]), .B(S), .C(1'b1));
+NAND3X1 I3 ( .Y(net57), .A(S0[14]), .B(net7), .C(1'b1));
+NAND3X1 I2 ( .Y(net56), .A(S1[14]), .B(S), .C(1'b1));
+NAND3X1 I1 ( .Y(net55), .A(S0[15]), .B(net7), .C(1'b1));
+NAND3X1 I0 ( .Y(net54), .A(S1[15]), .B(S), .C(1'b1));
+OR2X2 I47 ( .Y(Y[0]), .A(net15), .B(net14));
+OR2X2 I46 ( .Y(Y[1]), .A(net17), .B(net16));
+OR2X2 I45 ( .Y(Y[2]), .A(net19), .B(net18));
+OR2X2 I44 ( .Y(Y[3]), .A(net21), .B(net20));
+OR2X2 I43 ( .Y(Y[4]), .A(net23), .B(net22));
+OR2X2 I42 ( .Y(Y[5]), .A(net25), .B(net24));
+OR2X2 I41 ( .Y(Y[6]), .A(net27), .B(net26));
+OR2X2 I40 ( .Y(Y[7]), .A(net29), .B(net28));
+OR2X2 I39 ( .Y(Y[8]), .A(net31), .B(net30));
+OR2X2 I38 ( .Y(Y[9]), .A(net33), .B(net32));
+OR2X2 I37 ( .Y(Y[10]), .A(net35), .B(net34));
+OR2X2 I36 ( .Y(Y[11]), .A(net37), .B(net36));
+OR2X2 I35 ( .Y(Y[12]), .A(net39), .B(net38));
+OR2X2 I34 ( .Y(Y[13]), .A(net41), .B(net40));
+OR2X2 I33 ( .Y(Y[14]), .A(net43), .B(net42));
+OR2X2 I32 ( .Y(Y[15]), .A(net45), .B(net44));
+INVX1 I80 ( .Y(net7), .A(S));
+INVX1 I79 ( .Y(net14), .A(net60));
+INVX1 I78 ( .Y(net15), .A(net61));
+INVX1 I77 ( .Y(net16), .A(net64));
+INVX1 I76 ( .Y(net17), .A(net62));
+INVX1 I75 ( .Y(net18), .A(net63));
+INVX1 I74 ( .Y(net19), .A(net65));
+INVX1 I73 ( .Y(net20), .A(net66));
+INVX1 I72 ( .Y(net21), .A(net74));
+INVX1 I71 ( .Y(net22), .A(net73));
+INVX1 I70 ( .Y(net23), .A(net72));
+INVX1 I69 ( .Y(net24), .A(net71));
+INVX1 I68 ( .Y(net25), .A(net70));
+INVX1 I67 ( .Y(net26), .A(net69));
+INVX1 I66 ( .Y(net27), .A(net68));
+INVX1 I65 ( .Y(net28), .A(net67));
+INVX1 I64 ( .Y(net29), .A(net77));
+INVX1 I63 ( .Y(net30), .A(net76));
+INVX1 I62 ( .Y(net31), .A(net75));
+INVX1 I61 ( .Y(net32), .A(net53));
+INVX1 I60 ( .Y(net33), .A(net52));
+INVX1 I59 ( .Y(net34), .A(net51));
+INVX1 I58 ( .Y(net35), .A(net50));
+INVX1 I57 ( .Y(net36), .A(net49));
+INVX1 I56 ( .Y(net37), .A(net48));
+INVX1 I55 ( .Y(net38), .A(net47));
+INVX1 I54 ( .Y(net39), .A(net46));
+INVX1 I53 ( .Y(net40), .A(net59));
+INVX1 I52 ( .Y(net41), .A(net58));
+INVX1 I51 ( .Y(net42), .A(net57));
+INVX1 I50 ( .Y(net43), .A(net56));
+INVX1 I49 ( .Y(net44), .A(net55));
+INVX1 I48 ( .Y(net45), .A(net54));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module one_16 ( out );
+
+
+output [15:0]  out;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "one_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+buffer I16 ( .out(out[0]), .in(1'b1));
+buffer I15 ( .out(out[1]), .in(1'b0));
+buffer I14 ( .out(out[2]), .in(1'b0));
+buffer I13 ( .out(out[3]), .in(1'b0));
+buffer I12 ( .out(out[4]), .in(1'b0));
+buffer I11 ( .out(out[5]), .in(1'b0));
+buffer I10 ( .out(out[6]), .in(1'b0));
+buffer I9 ( .out(out[7]), .in(1'b0));
+buffer I8 ( .out(out[8]), .in(1'b0));
+buffer I7 ( .out(out[9]), .in(1'b0));
+buffer I6 ( .out(out[10]), .in(1'b0));
+buffer I5 ( .out(out[11]), .in(1'b0));
+buffer I4 ( .out(out[12]), .in(1'b0));
+buffer I3 ( .out(out[13]), .in(1'b0));
+buffer I2 ( .out(out[14]), .in(1'b0));
+buffer I1 ( .out(out[15]), .in(1'b0));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module inv_16 ( out, in );
+
+
+
+output [15:0]  out;
+
+input [15:0]  in;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "inv_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+INVX1 I16 ( .Y(out[0]), .A(in[0]));
+INVX1 I15 ( .Y(out[1]), .A(in[1]));
+INVX1 I14 ( .Y(out[2]), .A(in[2]));
+INVX1 I13 ( .Y(out[3]), .A(in[3]));
+INVX1 I12 ( .Y(out[4]), .A(in[4]));
+INVX1 I11 ( .Y(out[5]), .A(in[5]));
+INVX1 I10 ( .Y(out[6]), .A(in[6]));
+INVX1 I9 ( .Y(out[7]), .A(in[7]));
+INVX1 I8 ( .Y(out[8]), .A(in[8]));
+INVX1 I7 ( .Y(out[9]), .A(in[9]));
+INVX1 I6 ( .Y(out[10]), .A(in[10]));
+INVX1 I5 ( .Y(out[11]), .A(in[11]));
+INVX1 I4 ( .Y(out[12]), .A(in[12]));
+INVX1 I3 ( .Y(out[13]), .A(in[13]));
+INVX1 I2 ( .Y(out[14]), .A(in[14]));
+INVX1 I1 ( .Y(out[15]), .A(in[15]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module adder ( C, COUT, VOUT, A, B, CIN, CODE );
+
+output  COUT, VOUT;
+
+input  CIN;
+
+output [15:0]  C;
+
+input [15:0]  B;
+input [15:0]  A;
+input [2:0]  CODE;
+
+
+wire  [0:15]  net41;
+
+wire  [0:15]  net42;
+
+wire  [15:0]  Y;
+
+wire  [0:15]  net40;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "adder";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+kogge_stone_adder I0 ( .S(C[15:0]), .Cout(COUT), .A(A[15:0]),
+     .B(Y[15:0]), .Cin(net33));
+OR2X2 I11 ( .Y(net24), .A(net31), .B(net30));
+NAND3X1 I37 ( .Y(net038), .A(net026), .B(net037), .C(net049));
+NAND3X1 I10 ( .Y(net37), .A(net22), .B(net20), .C(C[15]));
+NAND3X1 I9 ( .Y(net38), .A(A[15]), .B(Y[15]), .C(net47));
+mux I35 ( .Y(VOUT), .S0(net040), .S1(1'b0), .S(net051));
+mux I33 ( .Y(net032), .S0(1'b1), .S1(1'b0),
+     .S(CODE[0]));
+mux I16 ( .Y(net040), .S0(COUT), .S1(net24), .S(CODE[2]));
+mux I17 ( .Y(net33), .S0(CIN), .S1(net032), .S(CODE[1]));
+INVX1 I41 ( .Y(net049), .A(CODE[2]));
+INVX1 I40 ( .Y(net037), .A(CODE[0]));
+INVX1 I39 ( .Y(net026), .A(CODE[1]));
+INVX1 I38 ( .Y(net051), .A(net038));
+INVX1 I27 ( .Y(net47), .A(C[15]));
+INVX1 I15 ( .Y(net20), .A(Y[15]));
+INVX1 I14 ( .Y(net22), .A(A[15]));
+INVX1 I13 ( .Y(net30), .A(net37));
+INVX1 I12 ( .Y(net31), .A(net38));
+mux_16 I22 ( .Y(Y[15:0]), .S(CODE[0]), .S0(net42[0:15]),
+     .S1(net41[0:15]));
+mux_16 I21 ( .Y(net41[0:15]), .S(CODE[1]), .S0(B[15:0]),
+     .S1(net40[0:15]));
+one_16 I32 ( .out(net40[0:15]));
+inv_16 I24 ( .out(net42[0:15]), .in(net41[0:15]));
+
+endmodule
+
+

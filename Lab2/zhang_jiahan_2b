@@ -1,0 +1,1693 @@
+`timescale 1ns / 1ns
+
+
+`timescale 1ns / 1ns
+
+
+`timescale 1ns / 1ns
+
+
+`timescale 1ns / 1ns
+module gray_cell ( G_i_j, G_i_k, .cdsTerm1(cdsNet0), P_i_k );
+
+output  G_i_j;
+
+input  G_i_k, cdsNet0, P_i_k;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "gray_cell";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+OR2X2 I0 ( .Y(G_i_j), .A(G_i_k), .B(net10));
+NAND3X1 I1 ( .Y(net11), .A(P_i_k), .B(cdsNet0), .C(1'b1));
+INVX1 I2 ( .Y(net10), .A(net11));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module black_cell ( G_i_j, P_i_j, G_i_k, .cdsTerm2(cdsNet1), P_i_k,
+     .cdsTerm3(cdsNet0) );
+
+output  G_i_j, P_i_j;
+
+input  G_i_k, cdsNet1, P_i_k, cdsNet0;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "black_cell";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+INVX1 I5 ( .Y(P_i_j), .A(net15));
+NAND3X1 I1 ( .Y(net15), .A(P_i_k), .B(cdsNet0), .C(1'b1));
+gray_cell I4 ( .G_i_j(G_i_j), .cdsTerm1(cdsNet1), .P_i_k(P_i_k),
+     .G_i_k(G_i_k));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module adder_generate ( G, A, B );
+
+output  G;
+
+input  A, B;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "adder_generate";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I0 ( .Y(net7), .A(A), .B(B), .C(1'b1));
+INVX1 I2 ( .Y(G), .A(net7));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module adder_propagate ( P, A, B );
+
+output  P;
+
+input  A, B;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "adder_propagate";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I2 ( .Y(net13), .A(net11), .B(net10), .C(1'b1));
+NAND3X1 I0 ( .Y(net11), .A(A), .B(B), .C(1'b1));
+OR2X2 I1 ( .Y(net10), .A(A), .B(B));
+INVX1 I3 ( .Y(P), .A(net13));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+
+
+`timescale 1ns / 1ns
+module buffer ( out, in );
+
+output  out;
+
+input  in;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "buffer";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+INVX1 I0 ( .Y(net5), .A(in));
+INVX4 I1 ( .Y(out), .A(net5));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module xor_ ( S, C_prev, P );
+
+output  S;
+
+input  C_prev, P;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "xor";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I1 ( .Y(net13), .A(net11), .B(net10), .C(1'b1));
+NAND3X1 I0 ( .Y(net11), .A(P), .B(C_prev), .C(1'b1));
+OR2X2 I2 ( .Y(net10), .A(P), .B(C_prev));
+INVX4 I3 ( .Y(S), .A(net13));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module kogge_stone_adder ( Cout, S, A, B, Cin );
+
+output  Cout;
+
+input  Cin;
+
+output [15:0]  S;
+
+input [15:0]  A;
+input [15:0]  B;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "kogge_stone_adder";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+black_cell I107 ( .P_i_j(net0235), .G_i_j(net0238), .cdsTerm3(net0133),
+     .cdsTerm2(net214), .P_i_k(net217), .G_i_k(net218));
+black_cell I104 ( .P_i_j(net0133), .G_i_j(net214), .cdsTerm3(net0198),
+     .cdsTerm2(net172), .P_i_k(net148), .G_i_k(net145));
+black_cell I73 ( .P_i_j(net212), .G_i_j(net213), .cdsTerm3(net169),
+     .cdsTerm2(net166), .P_i_k(net141), .G_i_k(net138));
+black_cell I72 ( .P_i_j(net211), .G_i_j(net210), .cdsTerm3(net162),
+     .cdsTerm2(net159), .P_i_k(net134), .G_i_k(net131));
+black_cell I71 ( .P_i_j(net208), .G_i_j(net209), .cdsTerm3(net155),
+     .cdsTerm2(net152), .P_i_k(net127), .G_i_k(net124));
+black_cell I70 ( .P_i_j(net207), .G_i_j(net206), .cdsTerm3(net148),
+     .cdsTerm2(net145), .P_i_k(net120), .G_i_k(net117));
+black_cell I69 ( .P_i_j(net204), .G_i_j(net205), .cdsTerm3(net141),
+     .cdsTerm2(net138), .P_i_k(net225), .G_i_k(net226));
+black_cell I68 ( .P_i_j(net203), .G_i_j(net202), .cdsTerm3(net134),
+     .cdsTerm2(net131), .P_i_k(net223), .G_i_k(net224));
+black_cell I67 ( .P_i_j(net201), .G_i_j(net200), .cdsTerm3(net127),
+     .cdsTerm2(net124), .P_i_k(net221), .G_i_k(net222));
+black_cell I66 ( .P_i_j(net217), .G_i_j(net218), .cdsTerm3(net120),
+     .cdsTerm2(net117), .P_i_k(net219), .G_i_k(net220));
+black_cell I99 ( .P_i_j(net0198), .G_i_j(net172), .cdsTerm3(net0223),
+     .cdsTerm2(net192), .P_i_k(net185), .G_i_k(net183));
+black_cell I61 ( .P_i_j(net169), .G_i_j(net166), .cdsTerm3(net190),
+     .cdsTerm2(net188), .P_i_k(net180), .G_i_k(net178));
+black_cell I60 ( .P_i_j(net162), .G_i_j(net159), .cdsTerm3(net185),
+     .cdsTerm2(net183), .P_i_k(net175), .G_i_k(net173));
+black_cell I59 ( .P_i_j(net155), .G_i_j(net152), .cdsTerm3(net180),
+     .cdsTerm2(net178), .P_i_k(net170), .G_i_k(net167));
+black_cell I58 ( .P_i_j(net148), .G_i_j(net145), .cdsTerm3(net175),
+     .cdsTerm2(net173), .P_i_k(net163), .G_i_k(net160));
+black_cell I57 ( .P_i_j(net141), .G_i_j(net138), .cdsTerm3(net170),
+     .cdsTerm2(net167), .P_i_k(net156), .G_i_k(net153));
+black_cell I56 ( .P_i_j(net134), .G_i_j(net131), .cdsTerm3(net163),
+     .cdsTerm2(net160), .P_i_k(net149), .G_i_k(net146));
+black_cell I55 ( .P_i_j(net127), .G_i_j(net124), .cdsTerm3(net156),
+     .cdsTerm2(net153), .P_i_k(net142), .G_i_k(net139));
+black_cell I54 ( .P_i_j(net120), .G_i_j(net117), .cdsTerm3(net149),
+     .cdsTerm2(net146), .P_i_k(net135), .G_i_k(net132));
+black_cell I53 ( .P_i_j(net225), .G_i_j(net226), .cdsTerm3(net142),
+     .cdsTerm2(net139), .P_i_k(net128), .G_i_k(net125));
+black_cell I52 ( .P_i_j(net223), .G_i_j(net224), .cdsTerm3(net135),
+     .cdsTerm2(net132), .P_i_k(net121), .G_i_k(net118));
+black_cell I51 ( .P_i_j(net221), .G_i_j(net222), .cdsTerm3(net128),
+     .cdsTerm2(net125), .P_i_k(net229), .G_i_k(net230));
+black_cell I50 ( .P_i_j(net219), .G_i_j(net220), .cdsTerm3(net121),
+     .cdsTerm2(net118), .P_i_k(net227), .G_i_k(net228));
+black_cell I98 ( .P_i_j(net0223), .G_i_j(net192), .cdsTerm3(net199),
+     .cdsTerm2(net198), .P_i_k(net197), .G_i_k(net196));
+black_cell I47 ( .P_i_j(net190), .G_i_j(net188), .cdsTerm3(net197),
+     .cdsTerm2(net196), .P_i_k(net194), .G_i_k(net193));
+black_cell I46 ( .P_i_j(net185), .G_i_j(net183), .cdsTerm3(net194),
+     .cdsTerm2(net193), .P_i_k(net191), .G_i_k(net189));
+black_cell I45 ( .P_i_j(net180), .G_i_j(net178), .cdsTerm3(net191),
+     .cdsTerm2(net189), .P_i_k(net186), .G_i_k(net184));
+black_cell I44 ( .P_i_j(net175), .G_i_j(net173), .cdsTerm3(net186),
+     .cdsTerm2(net184), .P_i_k(net181), .G_i_k(net179));
+black_cell I43 ( .P_i_j(net170), .G_i_j(net167), .cdsTerm3(net181),
+     .cdsTerm2(net179), .P_i_k(net176), .G_i_k(net174));
+black_cell I42 ( .P_i_j(net163), .G_i_j(net160), .cdsTerm3(net176),
+     .cdsTerm2(net174), .P_i_k(net171), .G_i_k(net168));
+black_cell I41 ( .P_i_j(net156), .G_i_j(net153), .cdsTerm3(net171),
+     .cdsTerm2(net168), .P_i_k(net164), .G_i_k(net161));
+black_cell I40 ( .P_i_j(net149), .G_i_j(net146), .cdsTerm3(net164),
+     .cdsTerm2(net161), .P_i_k(net157), .G_i_k(net154));
+black_cell I39 ( .P_i_j(net142), .G_i_j(net139), .cdsTerm3(net157),
+     .cdsTerm2(net154), .P_i_k(net150), .G_i_k(net147));
+black_cell I38 ( .P_i_j(net135), .G_i_j(net132), .cdsTerm3(net150),
+     .cdsTerm2(net147), .P_i_k(net143), .G_i_k(net140));
+black_cell I37 ( .P_i_j(net128), .G_i_j(net125), .cdsTerm3(net143),
+     .cdsTerm2(net140), .P_i_k(net136), .G_i_k(net133));
+black_cell I36 ( .P_i_j(net121), .G_i_j(net118), .cdsTerm3(net136),
+     .cdsTerm2(net133), .P_i_k(net129), .G_i_k(net126));
+black_cell I35 ( .P_i_j(net229), .G_i_j(net230), .cdsTerm3(net129),
+     .cdsTerm2(net126), .P_i_k(net122), .G_i_k(net119));
+black_cell I6 ( .P_i_j(net227), .G_i_j(net228), .cdsTerm3(net122),
+     .cdsTerm2(net119), .P_i_k(net115), .G_i_k(net231));
+adder_generate I33 ( .G(net198), .A(A[0]), .B(B[0]));
+adder_generate I32 ( .G(net196), .A(A[1]), .B(B[1]));
+adder_generate I29 ( .G(net193), .A(A[2]), .B(B[2]));
+adder_generate I28 ( .G(net189), .A(A[3]), .B(B[3]));
+adder_generate I25 ( .G(net184), .A(A[4]), .B(B[4]));
+adder_generate I24 ( .G(net179), .A(A[5]), .B(B[5]));
+adder_generate I21 ( .G(net174), .A(A[6]), .B(B[6]));
+adder_generate I20 ( .G(net168), .A(A[7]), .B(B[7]));
+adder_generate I17 ( .G(net161), .A(A[8]), .B(B[8]));
+adder_generate I16 ( .G(net154), .A(A[9]), .B(B[9]));
+adder_generate I13 ( .G(net147), .A(A[10]), .B(B[10]));
+adder_generate I12 ( .G(net140), .A(A[11]), .B(B[11]));
+adder_generate I9 ( .G(net133), .A(A[12]), .B(B[12]));
+adder_generate I7 ( .G(net126), .A(A[13]), .B(B[13]));
+adder_generate I3 ( .G(net119), .A(A[14]), .B(B[14]));
+adder_generate I2 ( .G(net231), .A(A[15]), .B(B[15]));
+adder_propagate I34 ( .P(net199), .A(A[0]), .B(B[0]));
+adder_propagate I31 ( .P(net197), .A(A[1]), .B(B[1]));
+adder_propagate I30 ( .P(net194), .A(A[2]), .B(B[2]));
+adder_propagate I27 ( .P(net191), .A(A[3]), .B(B[3]));
+adder_propagate I26 ( .P(net186), .A(A[4]), .B(B[4]));
+adder_propagate I23 ( .P(net181), .A(A[5]), .B(B[5]));
+adder_propagate I22 ( .P(net176), .A(A[6]), .B(B[6]));
+adder_propagate I19 ( .P(net171), .A(A[7]), .B(B[7]));
+adder_propagate I18 ( .P(net164), .A(A[8]), .B(B[8]));
+adder_propagate I15 ( .P(net157), .A(A[9]), .B(B[9]));
+adder_propagate I14 ( .P(net150), .A(A[10]), .B(B[10]));
+adder_propagate I11 ( .P(net143), .A(A[11]), .B(B[11]));
+adder_propagate I10 ( .P(net136), .A(A[12]), .B(B[12]));
+adder_propagate I8 ( .P(net129), .A(A[13]), .B(B[13]));
+adder_propagate I5 ( .P(net122), .A(A[14]), .B(B[14]));
+adder_propagate I4 ( .P(net115), .A(A[15]), .B(B[15]));
+gray_cell I108 ( .G_i_j(Cout), .cdsTerm1(Cin), .P_i_k(net0235),
+     .G_i_k(net0238));
+gray_cell I106 ( .G_i_j(net0246), .cdsTerm1(Cin), .P_i_k(net0133),
+     .G_i_k(net214));
+gray_cell I91 ( .G_i_j(net0245), .cdsTerm1(net195), .P_i_k(net212),
+     .G_i_k(net213));
+gray_cell I90 ( .G_i_j(net0244), .cdsTerm1(net0178), .P_i_k(net211),
+     .G_i_k(net210));
+gray_cell I89 ( .G_i_j(net0243), .cdsTerm1(net0170), .P_i_k(net208),
+     .G_i_k(net209));
+gray_cell I88 ( .G_i_j(net0242), .cdsTerm1(net0162), .P_i_k(net207),
+     .G_i_k(net206));
+gray_cell I87 ( .G_i_j(net0241), .cdsTerm1(net116), .P_i_k(net204),
+     .G_i_k(net205));
+gray_cell I86 ( .G_i_j(net0240), .cdsTerm1(net216), .P_i_k(net203),
+     .G_i_k(net202));
+gray_cell I85 ( .G_i_j(net0239), .cdsTerm1(net215), .P_i_k(net201),
+     .G_i_k(net200));
+gray_cell I100 ( .G_i_j(net0208), .cdsTerm1(Cin), .P_i_k(net0223),
+     .G_i_k(net192));
+gray_cell I97 ( .G_i_j(net0226), .cdsTerm1(Cin), .P_i_k(net199),
+     .G_i_k(net198));
+gray_cell I77 ( .G_i_j(net116), .cdsTerm1(net195), .P_i_k(net169),
+     .G_i_k(net166));
+gray_cell I76 ( .G_i_j(net216), .cdsTerm1(net0208), .P_i_k(net162),
+     .G_i_k(net159));
+gray_cell I75 ( .G_i_j(net215), .cdsTerm1(net177), .P_i_k(net155),
+     .G_i_k(net152));
+gray_cell I103 ( .G_i_j(net0162), .cdsTerm1(Cin), .P_i_k(net0198),
+     .G_i_k(net172));
+gray_cell I64 ( .G_i_j(net177), .cdsTerm1(net0226), .P_i_k(net190),
+     .G_i_k(net188));
+buffer I105 ( .out(net0236), .in(net0162));
+buffer I102 ( .out(net0178), .in(net0208));
+buffer I101 ( .out(net195), .in(net0226));
+buffer I95 ( .out(net0249), .in(net116));
+buffer I94 ( .out(net0248), .in(net216));
+buffer I93 ( .out(net0247), .in(net215));
+buffer I83 ( .out(net0170), .in(net177));
+xor_ I124 ( .S(S[15]), .C_prev(net0239), .P(net115));
+xor_ I123 ( .S(S[14]), .C_prev(net0240), .P(net122));
+xor_ I122 ( .S(S[13]), .C_prev(net0241), .P(net129));
+xor_ I121 ( .S(S[12]), .C_prev(net0242), .P(net136));
+xor_ I120 ( .S(S[11]), .C_prev(net0243), .P(net143));
+xor_ I119 ( .S(S[10]), .C_prev(net0244), .P(net150));
+xor_ I118 ( .S(S[9]), .C_prev(net0245), .P(net157));
+xor_ I117 ( .S(S[8]), .C_prev(net0246), .P(net164));
+xor_ I116 ( .S(S[7]), .C_prev(net0247), .P(net171));
+xor_ I115 ( .S(S[6]), .C_prev(net0248), .P(net176));
+xor_ I114 ( .S(S[5]), .C_prev(net0249), .P(net181));
+xor_ I113 ( .S(S[4]), .C_prev(net0236), .P(net186));
+xor_ I112 ( .S(S[3]), .C_prev(net0170), .P(net191));
+xor_ I111 ( .S(S[2]), .C_prev(net0178), .P(net194));
+xor_ I110 ( .S(S[1]), .C_prev(net195), .P(net197));
+xor_ I109 ( .S(S[0]), .C_prev(Cin), .P(net199));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module mux ( Y, S, S0, S1 );
+
+output  Y;
+
+input  S, S0, S1;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "mux";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I1 ( .Y(net13), .A(1'b1), .B(S0), .C(net08));
+NAND3X1 I0 ( .Y(net14), .A(S1), .B(1'b1), .C(S));
+INVX1 I6 ( .Y(net08), .A(S));
+INVX1 I3 ( .Y(net12), .A(net13));
+INVX1 I2 ( .Y(net11), .A(net14));
+OR2X2 I4 ( .Y(Y), .A(net11), .B(net12));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module mux_16 ( Y, S, S0, S1 );
+
+
+input  S;
+
+output [15:0]  Y;
+
+input [15:0]  S0;
+input [15:0]  S1;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "mux_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I31 ( .Y(net60), .A(S0[0]), .B(net7), .C(1'b1));
+NAND3X1 I30 ( .Y(net61), .A(S1[0]), .B(S), .C(1'b1));
+NAND3X1 I29 ( .Y(net64), .A(S0[1]), .B(net7), .C(1'b1));
+NAND3X1 I28 ( .Y(net62), .A(S1[1]), .B(S), .C(1'b1));
+NAND3X1 I27 ( .Y(net63), .A(S0[2]), .B(net7), .C(1'b1));
+NAND3X1 I26 ( .Y(net65), .A(S1[2]), .B(S), .C(1'b1));
+NAND3X1 I25 ( .Y(net66), .A(S0[3]), .B(net7), .C(1'b1));
+NAND3X1 I24 ( .Y(net74), .A(S1[3]), .B(S), .C(1'b1));
+NAND3X1 I23 ( .Y(net73), .A(S0[4]), .B(net7), .C(1'b1));
+NAND3X1 I22 ( .Y(net72), .A(S1[4]), .B(S), .C(1'b1));
+NAND3X1 I21 ( .Y(net71), .A(S0[5]), .B(net7), .C(1'b1));
+NAND3X1 I20 ( .Y(net70), .A(S1[5]), .B(S), .C(1'b1));
+NAND3X1 I19 ( .Y(net69), .A(S0[6]), .B(net7), .C(1'b1));
+NAND3X1 I18 ( .Y(net68), .A(S1[6]), .B(S), .C(1'b1));
+NAND3X1 I17 ( .Y(net67), .A(S0[7]), .B(net7), .C(1'b1));
+NAND3X1 I16 ( .Y(net77), .A(S1[7]), .B(S), .C(1'b1));
+NAND3X1 I15 ( .Y(net76), .A(S0[8]), .B(net7), .C(1'b1));
+NAND3X1 I14 ( .Y(net75), .A(S1[8]), .B(S), .C(1'b1));
+NAND3X1 I13 ( .Y(net53), .A(S0[9]), .B(net7), .C(1'b1));
+NAND3X1 I12 ( .Y(net52), .A(S1[9]), .B(S), .C(1'b1));
+NAND3X1 I11 ( .Y(net51), .A(S0[10]), .B(net7), .C(1'b1));
+NAND3X1 I10 ( .Y(net50), .A(S1[10]), .B(S), .C(1'b1));
+NAND3X1 I9 ( .Y(net49), .A(S0[11]), .B(net7), .C(1'b1));
+NAND3X1 I8 ( .Y(net48), .A(S1[11]), .B(S), .C(1'b1));
+NAND3X1 I7 ( .Y(net47), .A(S0[12]), .B(net7), .C(1'b1));
+NAND3X1 I6 ( .Y(net46), .A(S1[12]), .B(S), .C(1'b1));
+NAND3X1 I5 ( .Y(net59), .A(S0[13]), .B(net7), .C(1'b1));
+NAND3X1 I4 ( .Y(net58), .A(S1[13]), .B(S), .C(1'b1));
+NAND3X1 I3 ( .Y(net57), .A(S0[14]), .B(net7), .C(1'b1));
+NAND3X1 I2 ( .Y(net56), .A(S1[14]), .B(S), .C(1'b1));
+NAND3X1 I1 ( .Y(net55), .A(S0[15]), .B(net7), .C(1'b1));
+NAND3X1 I0 ( .Y(net54), .A(S1[15]), .B(S), .C(1'b1));
+OR2X2 I47 ( .Y(Y[0]), .A(net15), .B(net14));
+OR2X2 I46 ( .Y(Y[1]), .A(net17), .B(net16));
+OR2X2 I45 ( .Y(Y[2]), .A(net19), .B(net18));
+OR2X2 I44 ( .Y(Y[3]), .A(net21), .B(net20));
+OR2X2 I43 ( .Y(Y[4]), .A(net23), .B(net22));
+OR2X2 I42 ( .Y(Y[5]), .A(net25), .B(net24));
+OR2X2 I41 ( .Y(Y[6]), .A(net27), .B(net26));
+OR2X2 I40 ( .Y(Y[7]), .A(net29), .B(net28));
+OR2X2 I39 ( .Y(Y[8]), .A(net31), .B(net30));
+OR2X2 I38 ( .Y(Y[9]), .A(net33), .B(net32));
+OR2X2 I37 ( .Y(Y[10]), .A(net35), .B(net34));
+OR2X2 I36 ( .Y(Y[11]), .A(net37), .B(net36));
+OR2X2 I35 ( .Y(Y[12]), .A(net39), .B(net38));
+OR2X2 I34 ( .Y(Y[13]), .A(net41), .B(net40));
+OR2X2 I33 ( .Y(Y[14]), .A(net43), .B(net42));
+OR2X2 I32 ( .Y(Y[15]), .A(net45), .B(net44));
+INVX1 I80 ( .Y(net7), .A(S));
+INVX1 I79 ( .Y(net14), .A(net60));
+INVX1 I78 ( .Y(net15), .A(net61));
+INVX1 I77 ( .Y(net16), .A(net64));
+INVX1 I76 ( .Y(net17), .A(net62));
+INVX1 I75 ( .Y(net18), .A(net63));
+INVX1 I74 ( .Y(net19), .A(net65));
+INVX1 I73 ( .Y(net20), .A(net66));
+INVX1 I72 ( .Y(net21), .A(net74));
+INVX1 I71 ( .Y(net22), .A(net73));
+INVX1 I70 ( .Y(net23), .A(net72));
+INVX1 I69 ( .Y(net24), .A(net71));
+INVX1 I68 ( .Y(net25), .A(net70));
+INVX1 I67 ( .Y(net26), .A(net69));
+INVX1 I66 ( .Y(net27), .A(net68));
+INVX1 I65 ( .Y(net28), .A(net67));
+INVX1 I64 ( .Y(net29), .A(net77));
+INVX1 I63 ( .Y(net30), .A(net76));
+INVX1 I62 ( .Y(net31), .A(net75));
+INVX1 I61 ( .Y(net32), .A(net53));
+INVX1 I60 ( .Y(net33), .A(net52));
+INVX1 I59 ( .Y(net34), .A(net51));
+INVX1 I58 ( .Y(net35), .A(net50));
+INVX1 I57 ( .Y(net36), .A(net49));
+INVX1 I56 ( .Y(net37), .A(net48));
+INVX1 I55 ( .Y(net38), .A(net47));
+INVX1 I54 ( .Y(net39), .A(net46));
+INVX1 I53 ( .Y(net40), .A(net59));
+INVX1 I52 ( .Y(net41), .A(net58));
+INVX1 I51 ( .Y(net42), .A(net57));
+INVX1 I50 ( .Y(net43), .A(net56));
+INVX1 I49 ( .Y(net44), .A(net55));
+INVX1 I48 ( .Y(net45), .A(net54));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module one_16 ( out );
+
+
+output [15:0]  out;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "one_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+buffer I16 ( .out(out[0]), .in(1'b1));
+buffer I15 ( .out(out[1]), .in(1'b0));
+buffer I14 ( .out(out[2]), .in(1'b0));
+buffer I13 ( .out(out[3]), .in(1'b0));
+buffer I12 ( .out(out[4]), .in(1'b0));
+buffer I11 ( .out(out[5]), .in(1'b0));
+buffer I10 ( .out(out[6]), .in(1'b0));
+buffer I9 ( .out(out[7]), .in(1'b0));
+buffer I8 ( .out(out[8]), .in(1'b0));
+buffer I7 ( .out(out[9]), .in(1'b0));
+buffer I6 ( .out(out[10]), .in(1'b0));
+buffer I5 ( .out(out[11]), .in(1'b0));
+buffer I4 ( .out(out[12]), .in(1'b0));
+buffer I3 ( .out(out[13]), .in(1'b0));
+buffer I2 ( .out(out[14]), .in(1'b0));
+buffer I1 ( .out(out[15]), .in(1'b0));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module inv_16 ( out, in );
+
+
+
+output [15:0]  out;
+
+input [15:0]  in;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "inv_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+INVX1 I16 ( .Y(out[0]), .A(in[0]));
+INVX1 I15 ( .Y(out[1]), .A(in[1]));
+INVX1 I14 ( .Y(out[2]), .A(in[2]));
+INVX1 I13 ( .Y(out[3]), .A(in[3]));
+INVX1 I12 ( .Y(out[4]), .A(in[4]));
+INVX1 I11 ( .Y(out[5]), .A(in[5]));
+INVX1 I10 ( .Y(out[6]), .A(in[6]));
+INVX1 I9 ( .Y(out[7]), .A(in[7]));
+INVX1 I8 ( .Y(out[8]), .A(in[8]));
+INVX1 I7 ( .Y(out[9]), .A(in[9]));
+INVX1 I6 ( .Y(out[10]), .A(in[10]));
+INVX1 I5 ( .Y(out[11]), .A(in[11]));
+INVX1 I4 ( .Y(out[12]), .A(in[12]));
+INVX1 I3 ( .Y(out[13]), .A(in[13]));
+INVX1 I2 ( .Y(out[14]), .A(in[14]));
+INVX1 I1 ( .Y(out[15]), .A(in[15]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module adder ( C, COUT, VOUT, A, B, CIN, CODE );
+
+output  COUT, VOUT;
+
+input  CIN;
+
+output [15:0]  C;
+
+input [15:0]  B;
+input [15:0]  A;
+input [2:0]  CODE;
+
+
+wire  [0:15]  net41;
+
+wire  [0:15]  net42;
+
+wire  [15:0]  Y;
+
+wire  [0:15]  net40;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "adder";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+kogge_stone_adder I0 ( .S(C[15:0]), .Cout(COUT), .A(A[15:0]),
+     .B(Y[15:0]), .Cin(net33));
+OR2X2 I11 ( .Y(net24), .A(net31), .B(net30));
+NAND3X1 I37 ( .Y(net038), .A(net026), .B(net037), .C(net049));
+NAND3X1 I10 ( .Y(net37), .A(net22), .B(net20), .C(C[15]));
+NAND3X1 I9 ( .Y(net38), .A(A[15]), .B(Y[15]), .C(net47));
+mux I35 ( .Y(VOUT), .S0(net040), .S1(1'b0), .S(net051));
+mux I33 ( .Y(net032), .S0(1'b1), .S1(1'b0),
+     .S(CODE[0]));
+mux I16 ( .Y(net040), .S0(COUT), .S1(net24), .S(CODE[2]));
+mux I17 ( .Y(net33), .S0(CIN), .S1(net032), .S(CODE[1]));
+INVX1 I41 ( .Y(net049), .A(CODE[2]));
+INVX1 I40 ( .Y(net037), .A(CODE[0]));
+INVX1 I39 ( .Y(net026), .A(CODE[1]));
+INVX1 I38 ( .Y(net051), .A(net038));
+INVX1 I27 ( .Y(net47), .A(C[15]));
+INVX1 I15 ( .Y(net20), .A(Y[15]));
+INVX1 I14 ( .Y(net22), .A(A[15]));
+INVX1 I13 ( .Y(net30), .A(net37));
+INVX1 I12 ( .Y(net31), .A(net38));
+mux_16 I22 ( .Y(Y[15:0]), .S(CODE[0]), .S0(net42[0:15]),
+     .S1(net41[0:15]));
+mux_16 I21 ( .Y(net41[0:15]), .S(CODE[1]), .S0(B[15:0]),
+     .S1(net40[0:15]));
+one_16 I32 ( .out(net40[0:15]));
+inv_16 I24 ( .out(net42[0:15]), .in(net41[0:15]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module and_ ( C, A, B );
+
+output  C;
+
+input  A, B;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "and";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+NAND3X1 I0 ( .Y(net8), .A(A), .B(B), .C(1'b1));
+INVX1 I2 ( .Y(C), .A(net8));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module zero_detector ( out, A );
+
+output  out;
+
+
+input [15:0]  A;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "zero_detector";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+and_ I14 ( .C(out), .A(net29), .B(net28));
+and_ I13 ( .C(net28), .A(net30), .B(net26));
+and_ I12 ( .C(net29), .A(net31), .B(net27));
+and_ I11 ( .C(net26), .A(net35), .B(net22));
+and_ I10 ( .C(net30), .A(net34), .B(net23));
+and_ I9 ( .C(net27), .A(net33), .B(net24));
+and_ I8 ( .C(net31), .A(net32), .B(net25));
+and_ I7 ( .C(net22), .A(net15), .B(net21));
+and_ I6 ( .C(net35), .A(net12), .B(net7));
+and_ I5 ( .C(net23), .A(net19), .B(net8));
+and_ I4 ( .C(net34), .A(net16), .B(net9));
+and_ I3 ( .C(net24), .A(net20), .B(net13));
+and_ I2 ( .C(net33), .A(net10), .B(net17));
+and_ I1 ( .C(net25), .A(net11), .B(net36));
+and_ I0 ( .C(net32), .A(net18), .B(net14));
+INVX1 I30 ( .Y(net21), .A(A[0]));
+INVX1 I29 ( .Y(net15), .A(A[1]));
+INVX1 I28 ( .Y(net12), .A(A[3]));
+INVX1 I27 ( .Y(net7), .A(A[2]));
+INVX1 I26 ( .Y(net19), .A(A[5]));
+INVX1 I25 ( .Y(net8), .A(A[4]));
+INVX1 I24 ( .Y(net16), .A(A[7]));
+INVX1 I23 ( .Y(net9), .A(A[6]));
+INVX1 I22 ( .Y(net13), .A(A[8]));
+INVX1 I21 ( .Y(net20), .A(A[9]));
+INVX1 I20 ( .Y(net17), .A(A[10]));
+INVX1 I19 ( .Y(net10), .A(A[11]));
+INVX1 I18 ( .Y(net11), .A(A[13]));
+INVX1 I17 ( .Y(net36), .A(A[12]));
+INVX1 I16 ( .Y(net14), .A(A[14]));
+INVX1 I15 ( .Y(net18), .A(A[15]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module comparator ( seq, sge, sgt, sle, slt, sne, A, B );
+
+output  seq, sge, sgt, sle, slt, sne;
+
+
+input [15:0]  B;
+input [15:0]  A;
+
+
+wire  [2:0]  CODE;
+
+wire  [15:0]  C;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "comparator";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+adder I0 ( .C(C[15:0]), .VOUT(net18), .COUT(net26), .A(B[15:0]),
+     .B(A[15:0]), .CODE(CODE[2:0]), .CIN(CODE[2]));
+zero_detector I3 ( .out(seq), .A(C[15:0]));
+INVX1 I6 ( .Y(sle), .A(sgt));
+INVX1 I4 ( .Y(sne), .A(seq));
+xor_ I5 ( .S(sgt), .C_prev(net18), .P(C[15]));
+and_ I7 ( .C(slt), .A(sle), .B(sne));
+OR2X2 I8 ( .Y(sge), .A(sgt), .B(seq));
+buffer I12 ( .out(CODE[0]), .in(1'b0));
+buffer I10 ( .out(CODE[2]), .in(1'b1));
+buffer I9 ( .out(CODE[1]), .in(1'b0));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module and_4 ( F, A, B, C, D );
+
+output  F;
+
+input  A, B, C, D;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "and_4";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+and_ I2 ( .C(F), .A(net13), .B(net14));
+and_ I1 ( .C(net14), .A(C), .B(D));
+and_ I0 ( .C(net13), .A(A), .B(B));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module or_6 ( Y, A, B, C, D, E, F );
+
+output  Y;
+
+input  A, B, C, D, E, F;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "or_6";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+OR2X2 I4 ( .Y(Y), .A(net18), .B(net17));
+OR2X2 I3 ( .Y(net18), .A(net15), .B(net16));
+OR2X2 I2 ( .Y(net17), .A(E), .B(F));
+OR2X2 I1 ( .Y(net16), .A(C), .B(D));
+OR2X2 I0 ( .Y(net15), .A(A), .B(B));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module compare ( C, A, B, CODE );
+
+
+
+output [15:0]  C;
+
+input [2:0]  CODE;
+input [15:0]  B;
+input [15:0]  A;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "compare";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+comparator I0 ( .seq(net24), .sge(net23), .sgt(net22), .sle(net21),
+     .slt(net20), .sne(net19), .A(A[15:0]), .B(B[15:0]));
+and_4 I7 ( .F(net35), .A(net14), .B(CODE[1]), .C(net13), .D(net19));
+and_4 I6 ( .F(net34), .A(net14), .B(net16), .C(CODE[0]), .D(net20));
+and_4 I5 ( .F(net33), .A(CODE[2]), .B(net16), .C(net13), .D(net21));
+and_4 I4 ( .F(net31), .A(net14), .B(CODE[1]), .C(CODE[0]), .D(net22));
+and_4 I3 ( .F(net30), .A(CODE[2]), .B(CODE[1]), .C(net13), .D(net23));
+and_4 I2 ( .F(net32), .A(CODE[2]), .B(CODE[1]), .C(CODE[0]),
+     .D(net24));
+INVX1 I10 ( .Y(net14), .A(CODE[2]));
+INVX1 I9 ( .Y(net13), .A(CODE[0]));
+INVX1 I8 ( .Y(net16), .A(CODE[1]));
+or_6 I11 ( .Y(C[0]), .A(net32), .B(net30), .C(net31), .D(net33),
+     .E(net34), .F(net35));
+buffer I40 ( .out(C[1]), .in(1'b0));
+buffer I39 ( .out(C[2]), .in(1'b0));
+buffer I36 ( .out(C[3]), .in(1'b0));
+buffer I35 ( .out(C[4]), .in(1'b0));
+buffer I32 ( .out(C[5]), .in(1'b0));
+buffer I31 ( .out(C[6]), .in(1'b0));
+buffer I28 ( .out(C[7]), .in(1'b0));
+buffer I27 ( .out(C[8]), .in(1'b0));
+buffer I24 ( .out(C[9]), .in(1'b0));
+buffer I23 ( .out(C[10]), .in(1'b0));
+buffer I20 ( .out(C[11]), .in(1'b0));
+buffer I19 ( .out(C[12]), .in(1'b0));
+buffer I16 ( .out(C[13]), .in(1'b0));
+buffer I15 ( .out(C[14]), .in(1'b0));
+buffer I13 ( .out(C[15]), .in(1'b0));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module mux_31 ( Y, S, S0, S1 );
+
+
+input  S;
+
+output [30:0]  Y;
+
+input [30:0]  S0;
+input [30:0]  S1;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "mux_31";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+INVX1 I160 ( .Y(net17), .A(net134));
+INVX1 I157 ( .Y(net21), .A(net131));
+INVX1 I155 ( .Y(net18), .A(net132));
+INVX1 I152 ( .Y(net22), .A(net130));
+INVX1 I150 ( .Y(net15), .A(net118));
+INVX1 I147 ( .Y(net24), .A(net137));
+INVX1 I145 ( .Y(net19), .A(net138));
+INVX1 I142 ( .Y(net20), .A(net135));
+INVX1 I140 ( .Y(net16), .A(net136));
+INVX1 I137 ( .Y(net23), .A(net133));
+INVX1 I135 ( .Y(net25), .A(net125));
+INVX1 I132 ( .Y(net30), .A(net121));
+INVX1 I130 ( .Y(net27), .A(net122));
+INVX1 I127 ( .Y(net31), .A(net119));
+INVX1 I125 ( .Y(net28), .A(net120));
+INVX1 I122 ( .Y(net32), .A(net116));
+INVX1 I120 ( .Y(net29), .A(net117));
+INVX1 I117 ( .Y(net34), .A(net128));
+INVX1 I115 ( .Y(net26), .A(net129));
+INVX1 I112 ( .Y(net33), .A(net126));
+INVX1 I110 ( .Y(net35), .A(net127));
+INVX1 I107 ( .Y(net42), .A(net123));
+INVX1 I105 ( .Y(net36), .A(net124));
+INVX1 I102 ( .Y(net43), .A(net104));
+INVX1 I100 ( .Y(net37), .A(net105));
+INVX1 I97 ( .Y(net39), .A(net110));
+INVX1 I95 ( .Y(net40), .A(net109));
+INVX1 I92 ( .Y(net41), .A(net108));
+INVX1 I90 ( .Y(net38), .A(net107));
+INVX1 I87 ( .Y(net44), .A(net106));
+INVX1 I80 ( .Y(net7), .A(S));
+INVX1 I48 ( .Y(net47), .A(net111));
+INVX1 I49 ( .Y(net51), .A(net112));
+INVX1 I50 ( .Y(net48), .A(net113));
+INVX1 I51 ( .Y(net52), .A(net114));
+INVX1 I52 ( .Y(net45), .A(net115));
+INVX1 I53 ( .Y(net54), .A(net91));
+INVX1 I54 ( .Y(net49), .A(net92));
+INVX1 I55 ( .Y(net50), .A(net93));
+INVX1 I56 ( .Y(net46), .A(net94));
+INVX1 I57 ( .Y(net53), .A(net95));
+INVX1 I58 ( .Y(net55), .A(net96));
+INVX1 I59 ( .Y(net60), .A(net97));
+INVX1 I60 ( .Y(net57), .A(net98));
+INVX1 I61 ( .Y(net61), .A(net99));
+INVX1 I62 ( .Y(net58), .A(net100));
+INVX1 I63 ( .Y(net62), .A(net101));
+INVX1 I64 ( .Y(net59), .A(net102));
+INVX1 I65 ( .Y(net64), .A(net103));
+INVX1 I66 ( .Y(net56), .A(net77));
+INVX1 I67 ( .Y(net63), .A(net78));
+INVX1 I68 ( .Y(net65), .A(net79));
+INVX1 I69 ( .Y(net73), .A(net80));
+INVX1 I70 ( .Y(net66), .A(net81));
+INVX1 I71 ( .Y(net74), .A(net82));
+INVX1 I72 ( .Y(net67), .A(net83));
+INVX1 I73 ( .Y(net69), .A(net84));
+INVX1 I74 ( .Y(net70), .A(net85));
+INVX1 I75 ( .Y(net71), .A(net86));
+INVX1 I76 ( .Y(net68), .A(net87));
+INVX1 I77 ( .Y(net75), .A(net88));
+INVX1 I78 ( .Y(net76), .A(net89));
+INVX1 I79 ( .Y(net72), .A(net90));
+NAND3X1 I161 ( .Y(net134), .A(S1[30]), .B(S), .C(1'b1));
+NAND3X1 I158 ( .Y(net131), .A(S0[30]), .B(net7), .C(1'b1));
+NAND3X1 I156 ( .Y(net132), .A(S1[29]), .B(S), .C(1'b1));
+NAND3X1 I153 ( .Y(net130), .A(S0[29]), .B(net7), .C(1'b1));
+NAND3X1 I151 ( .Y(net118), .A(S1[28]), .B(S), .C(1'b1));
+NAND3X1 I148 ( .Y(net137), .A(S0[28]), .B(net7), .C(1'b1));
+NAND3X1 I146 ( .Y(net138), .A(S1[27]), .B(S), .C(1'b1));
+NAND3X1 I143 ( .Y(net135), .A(S0[27]), .B(net7), .C(1'b1));
+NAND3X1 I141 ( .Y(net136), .A(S1[26]), .B(S), .C(1'b1));
+NAND3X1 I138 ( .Y(net133), .A(S0[26]), .B(net7), .C(1'b1));
+NAND3X1 I136 ( .Y(net125), .A(S1[25]), .B(S), .C(1'b1));
+NAND3X1 I133 ( .Y(net121), .A(S0[25]), .B(net7), .C(1'b1));
+NAND3X1 I131 ( .Y(net122), .A(S1[24]), .B(S), .C(1'b1));
+NAND3X1 I128 ( .Y(net119), .A(S0[24]), .B(net7), .C(1'b1));
+NAND3X1 I126 ( .Y(net120), .A(S1[23]), .B(S), .C(1'b1));
+NAND3X1 I123 ( .Y(net116), .A(S0[23]), .B(net7), .C(1'b1));
+NAND3X1 I121 ( .Y(net117), .A(S1[22]), .B(S), .C(1'b1));
+NAND3X1 I118 ( .Y(net128), .A(S0[22]), .B(net7), .C(1'b1));
+NAND3X1 I116 ( .Y(net129), .A(S1[21]), .B(S), .C(1'b1));
+NAND3X1 I113 ( .Y(net126), .A(S0[21]), .B(net7), .C(1'b1));
+NAND3X1 I111 ( .Y(net127), .A(S1[20]), .B(S), .C(1'b1));
+NAND3X1 I108 ( .Y(net123), .A(S0[20]), .B(net7), .C(1'b1));
+NAND3X1 I106 ( .Y(net124), .A(S1[19]), .B(S), .C(1'b1));
+NAND3X1 I103 ( .Y(net104), .A(S0[19]), .B(net7), .C(1'b1));
+NAND3X1 I101 ( .Y(net105), .A(S1[18]), .B(S), .C(1'b1));
+NAND3X1 I98 ( .Y(net110), .A(S0[18]), .B(net7), .C(1'b1));
+NAND3X1 I96 ( .Y(net109), .A(S1[17]), .B(S), .C(1'b1));
+NAND3X1 I93 ( .Y(net108), .A(S0[17]), .B(net7), .C(1'b1));
+NAND3X1 I91 ( .Y(net107), .A(S1[16]), .B(S), .C(1'b1));
+NAND3X1 I88 ( .Y(net106), .A(S0[16]), .B(net7), .C(1'b1));
+NAND3X1 I0 ( .Y(net111), .A(S1[15]), .B(S), .C(1'b1));
+NAND3X1 I1 ( .Y(net112), .A(S0[15]), .B(net7), .C(1'b1));
+NAND3X1 I2 ( .Y(net113), .A(S1[14]), .B(S), .C(1'b1));
+NAND3X1 I3 ( .Y(net114), .A(S0[14]), .B(net7), .C(1'b1));
+NAND3X1 I4 ( .Y(net115), .A(S1[13]), .B(S), .C(1'b1));
+NAND3X1 I5 ( .Y(net91), .A(S0[13]), .B(net7), .C(1'b1));
+NAND3X1 I6 ( .Y(net92), .A(S1[12]), .B(S), .C(1'b1));
+NAND3X1 I7 ( .Y(net93), .A(S0[12]), .B(net7), .C(1'b1));
+NAND3X1 I8 ( .Y(net94), .A(S1[11]), .B(S), .C(1'b1));
+NAND3X1 I9 ( .Y(net95), .A(S0[11]), .B(net7), .C(1'b1));
+NAND3X1 I10 ( .Y(net96), .A(S1[10]), .B(S), .C(1'b1));
+NAND3X1 I11 ( .Y(net97), .A(S0[10]), .B(net7), .C(1'b1));
+NAND3X1 I12 ( .Y(net98), .A(S1[9]), .B(S), .C(1'b1));
+NAND3X1 I13 ( .Y(net99), .A(S0[9]), .B(net7), .C(1'b1));
+NAND3X1 I14 ( .Y(net100), .A(S1[8]), .B(S), .C(1'b1));
+NAND3X1 I15 ( .Y(net101), .A(S0[8]), .B(net7), .C(1'b1));
+NAND3X1 I16 ( .Y(net102), .A(S1[7]), .B(S), .C(1'b1));
+NAND3X1 I17 ( .Y(net103), .A(S0[7]), .B(net7), .C(1'b1));
+NAND3X1 I18 ( .Y(net77), .A(S1[6]), .B(S), .C(1'b1));
+NAND3X1 I19 ( .Y(net78), .A(S0[6]), .B(net7), .C(1'b1));
+NAND3X1 I20 ( .Y(net79), .A(S1[5]), .B(S), .C(1'b1));
+NAND3X1 I21 ( .Y(net80), .A(S0[5]), .B(net7), .C(1'b1));
+NAND3X1 I22 ( .Y(net81), .A(S1[4]), .B(S), .C(1'b1));
+NAND3X1 I23 ( .Y(net82), .A(S0[4]), .B(net7), .C(1'b1));
+NAND3X1 I24 ( .Y(net83), .A(S1[3]), .B(S), .C(1'b1));
+NAND3X1 I25 ( .Y(net84), .A(S0[3]), .B(net7), .C(1'b1));
+NAND3X1 I26 ( .Y(net85), .A(S1[2]), .B(S), .C(1'b1));
+NAND3X1 I27 ( .Y(net86), .A(S0[2]), .B(net7), .C(1'b1));
+NAND3X1 I28 ( .Y(net87), .A(S1[1]), .B(S), .C(1'b1));
+NAND3X1 I29 ( .Y(net88), .A(S0[1]), .B(net7), .C(1'b1));
+NAND3X1 I30 ( .Y(net89), .A(S1[0]), .B(S), .C(1'b1));
+NAND3X1 I31 ( .Y(net90), .A(S0[0]), .B(net7), .C(1'b1));
+OR2X2 I159 ( .Y(Y[30]), .A(net17), .B(net21));
+OR2X2 I154 ( .Y(Y[29]), .A(net18), .B(net22));
+OR2X2 I149 ( .Y(Y[28]), .A(net15), .B(net24));
+OR2X2 I144 ( .Y(Y[27]), .A(net19), .B(net20));
+OR2X2 I139 ( .Y(Y[26]), .A(net16), .B(net23));
+OR2X2 I134 ( .Y(Y[25]), .A(net25), .B(net30));
+OR2X2 I129 ( .Y(Y[24]), .A(net27), .B(net31));
+OR2X2 I124 ( .Y(Y[23]), .A(net28), .B(net32));
+OR2X2 I119 ( .Y(Y[22]), .A(net29), .B(net34));
+OR2X2 I114 ( .Y(Y[21]), .A(net26), .B(net33));
+OR2X2 I109 ( .Y(Y[20]), .A(net35), .B(net42));
+OR2X2 I104 ( .Y(Y[19]), .A(net36), .B(net43));
+OR2X2 I99 ( .Y(Y[18]), .A(net37), .B(net39));
+OR2X2 I94 ( .Y(Y[17]), .A(net40), .B(net41));
+OR2X2 I89 ( .Y(Y[16]), .A(net38), .B(net44));
+OR2X2 I32 ( .Y(Y[15]), .A(net47), .B(net51));
+OR2X2 I33 ( .Y(Y[14]), .A(net48), .B(net52));
+OR2X2 I34 ( .Y(Y[13]), .A(net45), .B(net54));
+OR2X2 I35 ( .Y(Y[12]), .A(net49), .B(net50));
+OR2X2 I36 ( .Y(Y[11]), .A(net46), .B(net53));
+OR2X2 I37 ( .Y(Y[10]), .A(net55), .B(net60));
+OR2X2 I38 ( .Y(Y[9]), .A(net57), .B(net61));
+OR2X2 I39 ( .Y(Y[8]), .A(net58), .B(net62));
+OR2X2 I40 ( .Y(Y[7]), .A(net59), .B(net64));
+OR2X2 I41 ( .Y(Y[6]), .A(net56), .B(net63));
+OR2X2 I42 ( .Y(Y[5]), .A(net65), .B(net73));
+OR2X2 I43 ( .Y(Y[4]), .A(net66), .B(net74));
+OR2X2 I44 ( .Y(Y[3]), .A(net67), .B(net69));
+OR2X2 I45 ( .Y(Y[2]), .A(net70), .B(net71));
+OR2X2 I46 ( .Y(Y[1]), .A(net68), .B(net75));
+OR2X2 I47 ( .Y(Y[0]), .A(net76), .B(net72));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module mux_3_31 ( C, S, five, four, one, seven, six, three, two, zero
+     );
+
+
+
+output [30:0]  C;
+
+input [2:0]  S;
+input [30:0]  zero;
+input [30:0]  four;
+input [30:0]  six;
+input [30:0]  five;
+input [30:0]  one;
+input [30:0]  two;
+input [30:0]  seven;
+input [30:0]  three;
+
+
+wire  [0:30]  net37;
+
+wire  [0:30]  net35;
+
+wire  [0:30]  net34;
+
+wire  [0:30]  net39;
+
+wire  [0:30]  net38;
+
+wire  [0:30]  net36;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "mux_3_31";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+mux_31 I6 ( .Y(C[30:0]), .S(S[0]), .S0(net39[0:30]), .S1(net38[0:30]));
+mux_31 I2 ( .Y(net35[0:30]), .S(S[2]), .S0(two[30:0]), .S1(six[30:0]));
+mux_31 I5 ( .Y(net38[0:30]), .S(S[1]), .S0(net36[0:30]),
+     .S1(net34[0:30]));
+mux_31 I0 ( .Y(net37[0:30]), .S(S[2]), .S0(zero[30:0]),
+     .S1(four[30:0]));
+mux_31 I1 ( .Y(net36[0:30]), .S(S[2]), .S0(one[30:0]),
+     .S1(five[30:0]));
+mux_31 I4 ( .Y(net39[0:30]), .S(S[1]), .S0(net37[0:30]),
+     .S1(net35[0:30]));
+mux_31 I3 ( .Y(net34[0:30]), .S(S[2]), .S0(three[30:0]),
+     .S1(seven[30:0]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module funnel_source_generator ( Z, A, arith, left, shift );
+
+
+input  arith, left, shift;
+
+output [30:0]  Z;
+
+input [15:0]  A;
+
+
+wire  [0:30]  net24;
+
+wire  [30:0]  two;
+
+wire  [30:0]  zero;
+
+wire  [0:30]  net26;
+
+wire  [30:0]  three;
+
+wire  [30:0]  five;
+
+wire  [30:0]  one;
+
+wire  [2:0]  S;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "funnel_source_generator";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+buffer I243 ( .out(three[14]), .in(A[15]));
+buffer I242 ( .out(three[11]), .in(A[12]));
+buffer I241 ( .out(three[10]), .in(A[11]));
+buffer I240 ( .out(three[9]), .in(A[10]));
+buffer I239 ( .out(three[12]), .in(A[13]));
+buffer I238 ( .out(three[13]), .in(A[14]));
+buffer I236 ( .out(three[0]), .in(A[1]));
+buffer I235 ( .out(three[1]), .in(A[2]));
+buffer I234 ( .out(three[2]), .in(A[3]));
+buffer I233 ( .out(three[3]), .in(A[4]));
+buffer I232 ( .out(three[4]), .in(A[5]));
+buffer I231 ( .out(three[5]), .in(A[6]));
+buffer I230 ( .out(three[6]), .in(A[7]));
+buffer I229 ( .out(three[7]), .in(A[8]));
+buffer I228 ( .out(three[8]), .in(A[9]));
+buffer I227 ( .out(one[12]), .in(A[12]));
+buffer I225 ( .out(one[11]), .in(A[11]));
+buffer I224 ( .out(one[10]), .in(A[10]));
+buffer I223 ( .out(one[13]), .in(A[13]));
+buffer I222 ( .out(one[14]), .in(A[14]));
+buffer I221 ( .out(one[0]), .in(A[0]));
+buffer I220 ( .out(one[1]), .in(A[1]));
+buffer I219 ( .out(one[2]), .in(A[2]));
+buffer I218 ( .out(one[3]), .in(A[3]));
+buffer I217 ( .out(one[4]), .in(A[4]));
+buffer I216 ( .out(one[5]), .in(A[5]));
+buffer I215 ( .out(one[6]), .in(A[6]));
+buffer I214 ( .out(one[7]), .in(A[7]));
+buffer I213 ( .out(one[8]), .in(A[8]));
+buffer I212 ( .out(one[9]), .in(A[9]));
+buffer I211 ( .out(zero[15]), .in(A[15]));
+buffer I210 ( .out(zero[16]), .in(A[15]));
+buffer I209 ( .out(zero[17]), .in(A[15]));
+buffer I208 ( .out(zero[18]), .in(A[15]));
+buffer I207 ( .out(zero[19]), .in(A[15]));
+buffer I206 ( .out(zero[20]), .in(A[15]));
+buffer I205 ( .out(zero[21]), .in(A[15]));
+buffer I204 ( .out(zero[22]), .in(A[15]));
+buffer I203 ( .out(zero[23]), .in(A[15]));
+buffer I202 ( .out(zero[24]), .in(A[15]));
+buffer I201 ( .out(zero[25]), .in(A[15]));
+buffer I200 ( .out(zero[26]), .in(A[15]));
+buffer I199 ( .out(zero[27]), .in(A[15]));
+buffer I198 ( .out(zero[28]), .in(A[15]));
+buffer I197 ( .out(zero[29]), .in(A[15]));
+buffer I195 ( .out(five[16]), .in(1'b0));
+buffer I194 ( .out(five[17]), .in(1'b0));
+buffer I191 ( .out(five[18]), .in(1'b0));
+buffer I190 ( .out(five[19]), .in(1'b0));
+buffer I187 ( .out(five[20]), .in(1'b0));
+buffer I186 ( .out(five[21]), .in(1'b0));
+buffer I183 ( .out(five[22]), .in(1'b0));
+buffer I182 ( .out(five[23]), .in(1'b0));
+buffer I179 ( .out(five[24]), .in(1'b0));
+buffer I178 ( .out(five[25]), .in(1'b0));
+buffer I175 ( .out(five[26]), .in(1'b0));
+buffer I174 ( .out(five[27]), .in(1'b0));
+buffer I171 ( .out(five[28]), .in(1'b0));
+buffer I170 ( .out(five[29]), .in(1'b0));
+buffer I168 ( .out(five[30]), .in(1'b0));
+buffer I166 ( .out(five[12]), .in(A[12]));
+buffer I165 ( .out(five[15]), .in(A[15]));
+buffer I164 ( .out(five[11]), .in(A[11]));
+buffer I163 ( .out(five[1]), .in(A[1]));
+buffer I162 ( .out(five[0]), .in(A[0]));
+buffer I161 ( .out(five[2]), .in(A[2]));
+buffer I160 ( .out(five[14]), .in(A[14]));
+buffer I159 ( .out(five[3]), .in(A[3]));
+buffer I158 ( .out(five[13]), .in(A[13]));
+buffer I157 ( .out(five[9]), .in(A[9]));
+buffer I156 ( .out(five[8]), .in(A[8]));
+buffer I155 ( .out(five[7]), .in(A[7]));
+buffer I154 ( .out(five[6]), .in(A[6]));
+buffer I153 ( .out(five[4]), .in(A[4]));
+buffer I152 ( .out(five[10]), .in(A[10]));
+buffer I151 ( .out(five[5]), .in(A[5]));
+buffer I150 ( .out(three[27]), .in(A[12]));
+buffer I149 ( .out(three[30]), .in(A[15]));
+buffer I148 ( .out(three[26]), .in(A[11]));
+buffer I147 ( .out(three[16]), .in(A[1]));
+buffer I146 ( .out(three[15]), .in(A[0]));
+buffer I145 ( .out(three[17]), .in(A[2]));
+buffer I144 ( .out(three[29]), .in(A[14]));
+buffer I143 ( .out(three[18]), .in(A[3]));
+buffer I142 ( .out(three[28]), .in(A[13]));
+buffer I141 ( .out(three[24]), .in(A[9]));
+buffer I140 ( .out(three[23]), .in(A[8]));
+buffer I139 ( .out(three[22]), .in(A[7]));
+buffer I138 ( .out(three[21]), .in(A[6]));
+buffer I137 ( .out(three[19]), .in(A[4]));
+buffer I136 ( .out(three[25]), .in(A[10]));
+buffer I135 ( .out(three[20]), .in(A[5]));
+buffer I134 ( .out(S[0]), .in(shift));
+buffer I133 ( .out(S[1]), .in(left));
+buffer I132 ( .out(S[2]), .in(arith));
+buffer I130 ( .out(two[0]), .in(1'b0));
+buffer I129 ( .out(two[1]), .in(1'b0));
+buffer I126 ( .out(two[2]), .in(1'b0));
+buffer I125 ( .out(two[3]), .in(1'b0));
+buffer I122 ( .out(two[4]), .in(1'b0));
+buffer I121 ( .out(two[5]), .in(1'b0));
+buffer I118 ( .out(two[6]), .in(1'b0));
+buffer I117 ( .out(two[7]), .in(1'b0));
+buffer I114 ( .out(two[8]), .in(1'b0));
+buffer I113 ( .out(two[9]), .in(1'b0));
+buffer I110 ( .out(two[10]), .in(1'b0));
+buffer I109 ( .out(two[11]), .in(1'b0));
+buffer I106 ( .out(two[12]), .in(1'b0));
+buffer I105 ( .out(two[13]), .in(1'b0));
+buffer I103 ( .out(two[14]), .in(1'b0));
+buffer I100 ( .out(two[27]), .in(A[12]));
+buffer I99 ( .out(two[30]), .in(A[15]));
+buffer I98 ( .out(two[26]), .in(A[11]));
+buffer I97 ( .out(two[25]), .in(A[10]));
+buffer I96 ( .out(two[28]), .in(A[13]));
+buffer I95 ( .out(two[29]), .in(A[14]));
+buffer I94 ( .out(two[15]), .in(A[0]));
+buffer I93 ( .out(two[16]), .in(A[1]));
+buffer I92 ( .out(two[17]), .in(A[2]));
+buffer I91 ( .out(two[18]), .in(A[3]));
+buffer I90 ( .out(two[19]), .in(A[4]));
+buffer I89 ( .out(two[20]), .in(A[5]));
+buffer I88 ( .out(two[21]), .in(A[6]));
+buffer I87 ( .out(two[22]), .in(A[7]));
+buffer I86 ( .out(two[23]), .in(A[8]));
+buffer I85 ( .out(two[24]), .in(A[9]));
+buffer I84 ( .out(one[25]), .in(A[9]));
+buffer I83 ( .out(one[24]), .in(A[8]));
+buffer I82 ( .out(one[23]), .in(A[7]));
+buffer I81 ( .out(one[22]), .in(A[6]));
+buffer I80 ( .out(one[21]), .in(A[5]));
+buffer I79 ( .out(one[20]), .in(A[4]));
+buffer I78 ( .out(one[19]), .in(A[3]));
+buffer I77 ( .out(one[18]), .in(A[2]));
+buffer I76 ( .out(one[17]), .in(A[1]));
+buffer I75 ( .out(one[16]), .in(A[0]));
+buffer I74 ( .out(one[30]), .in(A[14]));
+buffer I73 ( .out(one[29]), .in(A[13]));
+buffer I72 ( .out(one[26]), .in(A[10]));
+buffer I71 ( .out(one[27]), .in(A[11]));
+buffer I70 ( .out(one[15]), .in(A[15]));
+buffer I69 ( .out(one[28]), .in(A[12]));
+buffer I68 ( .out(zero[0]), .in(A[0]));
+buffer I67 ( .out(zero[1]), .in(A[1]));
+buffer I66 ( .out(zero[2]), .in(A[2]));
+buffer I65 ( .out(zero[3]), .in(A[3]));
+buffer I64 ( .out(zero[4]), .in(A[4]));
+buffer I63 ( .out(zero[5]), .in(A[5]));
+buffer I62 ( .out(zero[6]), .in(A[6]));
+buffer I61 ( .out(zero[7]), .in(A[7]));
+buffer I60 ( .out(zero[8]), .in(A[8]));
+buffer I59 ( .out(zero[9]), .in(A[9]));
+buffer I58 ( .out(zero[10]), .in(A[10]));
+buffer I57 ( .out(zero[11]), .in(A[11]));
+buffer I56 ( .out(zero[12]), .in(A[12]));
+buffer I55 ( .out(zero[13]), .in(A[13]));
+buffer I54 ( .out(zero[14]), .in(A[14]));
+buffer I53 ( .out(zero[30]), .in(A[15]));
+mux_3_31 I52 ( .C(Z[30:0]), .S(S[2:0]), .zero(one[30:0]),
+     .one(five[30:0]), .two(three[30:0]), .three(two[30:0]),
+     .four(net24[0:30]), .five(zero[30:0]), .six(net26[0:30]),
+     .seven(two[30:0]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module funnel_shifter ( Y, vout_sra, A, B, arith, left, shift );
+
+output  vout_sra;
+
+input  arith, left, shift;
+
+output [15:0]  Y;
+
+input [3:0]  B;
+input [15:0]  A;
+
+
+wire  [30:0]  Z;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "funnel_shifter";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+funnel_source_generator I0 ( .Z(Z[30:0]), .A(A[15:0]), .arith(arith),
+     .left(left), .shift(shift));
+xor_ I65 ( .S(net22), .C_prev(B[0]), .P(left));
+xor_ I47 ( .S(net19), .C_prev(B[1]), .P(left));
+xor_ I25 ( .S(net16), .C_prev(B[2]), .P(left));
+xor_ I1 ( .S(net15), .C_prev(B[3]), .P(left));
+mux I81 ( .Y(Y[0]), .S0(net74), .S1(net64), .S(net22));
+mux I80 ( .Y(Y[1]), .S0(net64), .S1(net62), .S(net22));
+mux I79 ( .Y(Y[2]), .S0(net62), .S1(net60), .S(net22));
+mux I78 ( .Y(Y[3]), .S0(net60), .S1(net57), .S(net22));
+mux I77 ( .Y(Y[4]), .S0(net57), .S1(net54), .S(net22));
+mux I76 ( .Y(Y[5]), .S0(net54), .S1(net51), .S(net22));
+mux I75 ( .Y(Y[6]), .S0(net51), .S1(net48), .S(net22));
+mux I74 ( .Y(Y[7]), .S0(net48), .S1(net45), .S(net22));
+mux I73 ( .Y(Y[8]), .S0(net45), .S1(net42), .S(net22));
+mux I72 ( .Y(Y[9]), .S0(net42), .S1(net39), .S(net22));
+mux I71 ( .Y(Y[10]), .S0(net39), .S1(net36), .S(net22));
+mux I70 ( .Y(Y[11]), .S0(net36), .S1(net33), .S(net22));
+mux I69 ( .Y(Y[12]), .S0(net33), .S1(net30), .S(net22));
+mux I68 ( .Y(Y[13]), .S0(net30), .S1(net27), .S(net22));
+mux I67 ( .Y(Y[14]), .S0(net27), .S1(net23), .S(net22));
+mux I66 ( .Y(Y[15]), .S0(net23), .S1(net73), .S(net22));
+mux I64 ( .Y(net74), .S0(net76), .S1(net63), .S(net19));
+mux I63 ( .Y(net64), .S0(net75), .S1(net61), .S(net19));
+mux I62 ( .Y(net62), .S0(net63), .S1(net58), .S(net19));
+mux I61 ( .Y(net60), .S0(net61), .S1(net55), .S(net19));
+mux I60 ( .Y(net57), .S0(net58), .S1(net52), .S(net19));
+mux I59 ( .Y(net54), .S0(net55), .S1(net49), .S(net19));
+mux I58 ( .Y(net51), .S0(net52), .S1(net46), .S(net19));
+mux I57 ( .Y(net48), .S0(net49), .S1(net43), .S(net19));
+mux I56 ( .Y(net45), .S0(net46), .S1(net40), .S(net19));
+mux I55 ( .Y(net42), .S0(net43), .S1(net37), .S(net19));
+mux I54 ( .Y(net39), .S0(net40), .S1(net34), .S(net19));
+mux I53 ( .Y(net36), .S0(net37), .S1(net31), .S(net19));
+mux I52 ( .Y(net33), .S0(net34), .S1(net28), .S(net19));
+mux I51 ( .Y(net30), .S0(net31), .S1(net075), .S(net19));
+mux I50 ( .Y(net27), .S0(net28), .S1(net24), .S(net19));
+mux I49 ( .Y(net23), .S0(net075), .S1(net72), .S(net19));
+mux I46 ( .Y(net76), .S0(net79), .S1(net59), .S(net16));
+mux I45 ( .Y(net75), .S0(net78), .S1(net56), .S(net16));
+mux I44 ( .Y(net63), .S0(net77), .S1(net53), .S(net16));
+mux I43 ( .Y(net61), .S0(net80), .S1(net50), .S(net16));
+mux I42 ( .Y(net58), .S0(net59), .S1(net47), .S(net16));
+mux I41 ( .Y(net55), .S0(net56), .S1(net44), .S(net16));
+mux I40 ( .Y(net52), .S0(net53), .S1(net41), .S(net16));
+mux I39 ( .Y(net49), .S0(net50), .S1(net38), .S(net16));
+mux I38 ( .Y(net46), .S0(net47), .S1(net35), .S(net16));
+mux I37 ( .Y(net43), .S0(net44), .S1(net32), .S(net16));
+mux I36 ( .Y(net40), .S0(net41), .S1(net29), .S(net16));
+mux I35 ( .Y(net37), .S0(net38), .S1(net25), .S(net16));
+mux I34 ( .Y(net34), .S0(net35), .S1(net21), .S(net16));
+mux I33 ( .Y(net31), .S0(net32), .S1(net18), .S(net16));
+mux I32 ( .Y(net28), .S0(net29), .S1(net17), .S(net16));
+mux I31 ( .Y(net075), .S0(net25), .S1(net70), .S(net16));
+mux I30 ( .Y(net24), .S0(net21), .S1(net69), .S(net16));
+mux I29 ( .Y(net72), .S0(net18), .S1(net68), .S(net16));
+mux I28 ( .Y(net71), .S0(net17), .S1(net66), .S(net16));
+mux I48 ( .Y(net73), .S0(net24), .S1(net71), .S(net19));
+mux I24 ( .Y(net79), .S0(Z[0]), .S1(Z[8]), .S(net15));
+mux I23 ( .Y(net78), .S0(Z[1]), .S1(Z[9]), .S(net15));
+mux I22 ( .Y(net77), .S0(Z[2]), .S1(Z[10]), .S(net15));
+mux I21 ( .Y(net80), .S0(Z[3]), .S1(Z[11]), .S(net15));
+mux I20 ( .Y(net59), .S0(Z[4]), .S1(Z[12]), .S(net15));
+mux I19 ( .Y(net56), .S0(Z[5]), .S1(Z[13]), .S(net15));
+mux I18 ( .Y(net53), .S0(Z[6]), .S1(Z[14]), .S(net15));
+mux I17 ( .Y(net50), .S0(Z[7]), .S1(Z[15]), .S(net15));
+mux I16 ( .Y(net47), .S0(Z[8]), .S1(Z[16]), .S(net15));
+mux I15 ( .Y(net44), .S0(Z[9]), .S1(Z[17]), .S(net15));
+mux I14 ( .Y(net41), .S0(Z[10]), .S1(Z[18]), .S(net15));
+mux I13 ( .Y(net38), .S0(Z[11]), .S1(Z[19]), .S(net15));
+mux I12 ( .Y(net35), .S0(Z[12]), .S1(Z[20]), .S(net15));
+mux I11 ( .Y(net32), .S0(Z[13]), .S1(Z[21]), .S(net15));
+mux I10 ( .Y(net29), .S0(Z[14]), .S1(Z[22]), .S(net15));
+mux I9 ( .Y(net25), .S0(Z[15]), .S1(Z[23]), .S(net15));
+mux I8 ( .Y(net21), .S0(Z[16]), .S1(Z[24]), .S(net15));
+mux I7 ( .Y(net18), .S0(Z[17]), .S1(Z[25]), .S(net15));
+mux I6 ( .Y(net17), .S0(Z[18]), .S1(Z[26]), .S(net15));
+mux I5 ( .Y(net70), .S0(Z[19]), .S1(Z[27]), .S(net15));
+mux I4 ( .Y(net69), .S0(Z[20]), .S1(Z[28]), .S(net15));
+mux I3 ( .Y(net68), .S0(Z[21]), .S1(Z[29]), .S(net15));
+mux I2 ( .Y(net66), .S0(Z[22]), .S1(Z[30]), .S(net15));
+OR2X2 I146 ( .Y(net0110), .A(net76), .B(net75));
+OR2X2 I145 ( .Y(net0118), .A(net0100), .B(net0103));
+OR2X2 I144 ( .Y(net0103), .A(net77), .B(net80));
+OR2X2 I143 ( .Y(net0100), .A(net79), .B(net78));
+OR2X2 I142 ( .Y(vout_sra), .A(net0116), .B(net0117));
+OR2X2 I141 ( .Y(net0117), .A(net0114), .B(net0115));
+OR2X2 I140 ( .Y(net0116), .A(net0113), .B(net0112));
+OR2X2 I135 ( .Y(net0111), .A(net0108), .B(net0107));
+OR2X2 I134 ( .Y(net0107), .A(net0101), .B(net0104));
+OR2X2 I133 ( .Y(net0108), .A(net0102), .B(net0105));
+OR2X2 I132 ( .Y(net0104), .A(Z[6]), .B(Z[7]));
+OR2X2 I131 ( .Y(net0101), .A(Z[4]), .B(Z[5]));
+OR2X2 I130 ( .Y(net0105), .A(Z[2]), .B(Z[3]));
+OR2X2 I129 ( .Y(net0102), .A(Z[0]), .B(Z[1]));
+and_ I139 ( .C(net0115), .A(net22), .B(net74));
+and_ I138 ( .C(net0114), .A(net19), .B(net0110));
+and_ I137 ( .C(net0112), .A(net16), .B(net0118));
+and_ I136 ( .C(net0113), .A(net15), .B(net0111));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module shift ( C, VOUT, A, B, CODE );
+
+output  VOUT;
+
+
+output [15:0]  C;
+
+input [3:0]  B;
+input [2:0]  CODE;
+input [15:0]  A;
+
+
+wire  [0:15]  net031;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "shift";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+funnel_shifter I25 ( .Y(net031[0:15]), .vout_sra(net025), .A(C[15:0]),
+     .B(B[3:0]), .arith(1'b1), .left(1'b0),
+     .shift(1'b1));
+funnel_shifter I0 ( .vout_sra(net049), .Y(C[15:0]), .A(A[15:0]),
+     .B(B[3:0]), .arith(CODE[2]), .left(net9), .shift(net10));
+INVX1 I1 ( .Y(net9), .A(CODE[0]));
+OR2X2 I6 ( .Y(VOUT), .A(net024), .B(net023));
+OR2X2 I2 ( .Y(net10), .A(CODE[2]), .B(CODE[1]));
+and_ I8 ( .C(net023), .A(net026), .B(net049));
+and_ I7 ( .C(net024), .A(net027), .B(net019));
+and_ I5 ( .C(net026), .A(CODE[2]), .B(CODE[0]));
+and_ I4 ( .C(net027), .A(CODE[2]), .B(net9));
+comparator I26 ( .seq(net034), .sge(net033), .sgt(net028),
+     .sle(net029), .slt(net030), .sne(net019), .A(net031[0:15]),
+     .B(A[15:0]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module mux_3_16 ( C, S, five, four, one, seven, six, three, two, zero
+     );
+
+
+
+output [15:0]  C;
+
+input [15:0]  seven;
+input [15:0]  one;
+input [15:0]  two;
+input [15:0]  six;
+input [15:0]  five;
+input [15:0]  three;
+input [15:0]  zero;
+input [15:0]  four;
+input [2:0]  S;
+
+
+wire  [0:15]  net27;
+
+wire  [0:15]  net31;
+
+wire  [0:15]  net29;
+
+wire  [0:15]  net30;
+
+wire  [0:15]  net26;
+
+wire  [0:15]  net28;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "mux_3_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+mux_16 I12 ( .Y(C[15:0]), .S(S[0]), .S0(net31[0:15]),
+     .S1(net30[0:15]));
+mux_16 I9 ( .Y(net30[0:15]), .S(S[1]), .S0(net28[0:15]),
+     .S1(net26[0:15]));
+mux_16 I8 ( .Y(net31[0:15]), .S(S[1]), .S0(net29[0:15]),
+     .S1(net27[0:15]));
+mux_16 I3 ( .Y(net26[0:15]), .S(S[2]), .S0(three[15:0]),
+     .S1(seven[15:0]));
+mux_16 I2 ( .Y(net27[0:15]), .S(S[2]), .S0(two[15:0]), .S1(six[15:0]));
+mux_16 I1 ( .Y(net28[0:15]), .S(S[2]), .S0(one[15:0]),
+     .S1(five[15:0]));
+mux_16 I0 ( .Y(net29[0:15]), .S(S[2]), .S0(zero[15:0]),
+     .S1(four[15:0]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module and_16 ( C, A, B );
+
+
+
+output [15:0]  C;
+
+input [15:0]  A;
+input [15:0]  B;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "and_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+and_ I15 ( .C(C[0]), .A(A[0]), .B(B[0]));
+and_ I14 ( .C(C[1]), .A(A[1]), .B(B[1]));
+and_ I13 ( .C(C[2]), .A(A[2]), .B(B[2]));
+and_ I12 ( .C(C[3]), .A(A[3]), .B(B[3]));
+and_ I11 ( .C(C[4]), .A(A[4]), .B(B[4]));
+and_ I10 ( .C(C[5]), .A(A[5]), .B(B[5]));
+and_ I9 ( .C(C[6]), .A(A[6]), .B(B[6]));
+and_ I8 ( .C(C[7]), .A(A[7]), .B(B[7]));
+and_ I7 ( .C(C[8]), .A(A[8]), .B(B[8]));
+and_ I6 ( .C(C[9]), .A(A[9]), .B(B[9]));
+and_ I5 ( .C(C[10]), .A(A[10]), .B(B[10]));
+and_ I4 ( .C(C[11]), .A(A[11]), .B(B[11]));
+and_ I3 ( .C(C[12]), .A(A[12]), .B(B[12]));
+and_ I2 ( .C(C[13]), .A(A[13]), .B(B[13]));
+and_ I1 ( .C(C[14]), .A(A[14]), .B(B[14]));
+and_ I0 ( .C(C[15]), .A(A[15]), .B(B[15]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module xor_16 ( C, A, B );
+
+
+
+output [15:0]  C;
+
+input [15:0]  B;
+input [15:0]  A;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "xor_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+xor_ I15 ( .S(C[0]), .C_prev(A[0]), .P(B[0]));
+xor_ I14 ( .S(C[1]), .C_prev(A[1]), .P(B[1]));
+xor_ I13 ( .S(C[2]), .C_prev(A[2]), .P(B[2]));
+xor_ I12 ( .S(C[3]), .C_prev(A[3]), .P(B[3]));
+xor_ I11 ( .S(C[4]), .C_prev(A[4]), .P(B[4]));
+xor_ I10 ( .S(C[5]), .C_prev(A[5]), .P(B[5]));
+xor_ I9 ( .S(C[6]), .C_prev(A[6]), .P(B[6]));
+xor_ I8 ( .S(C[7]), .C_prev(A[7]), .P(B[7]));
+xor_ I7 ( .S(C[8]), .C_prev(A[8]), .P(B[8]));
+xor_ I6 ( .S(C[9]), .C_prev(A[9]), .P(B[9]));
+xor_ I5 ( .S(C[10]), .C_prev(A[10]), .P(B[10]));
+xor_ I4 ( .S(C[11]), .C_prev(A[11]), .P(B[11]));
+xor_ I3 ( .S(C[12]), .C_prev(A[12]), .P(B[12]));
+xor_ I2 ( .S(C[13]), .C_prev(A[13]), .P(B[13]));
+xor_ I1 ( .S(C[14]), .C_prev(A[14]), .P(B[14]));
+xor_ I0 ( .S(C[15]), .C_prev(A[15]), .P(B[15]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module or_16 ( C, A, B );
+
+
+
+output [15:0]  C;
+
+input [15:0]  B;
+input [15:0]  A;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "or_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+OR2X2 I15 ( .Y(C[0]), .A(A[0]), .B(B[0]));
+OR2X2 I14 ( .Y(C[1]), .A(A[1]), .B(B[1]));
+OR2X2 I13 ( .Y(C[2]), .A(A[2]), .B(B[2]));
+OR2X2 I12 ( .Y(C[3]), .A(A[3]), .B(B[3]));
+OR2X2 I11 ( .Y(C[4]), .A(A[4]), .B(B[4]));
+OR2X2 I10 ( .Y(C[5]), .A(A[5]), .B(B[5]));
+OR2X2 I9 ( .Y(C[6]), .A(A[6]), .B(B[6]));
+OR2X2 I8 ( .Y(C[7]), .A(A[7]), .B(B[7]));
+OR2X2 I7 ( .Y(C[8]), .A(A[8]), .B(B[8]));
+OR2X2 I6 ( .Y(C[9]), .A(A[9]), .B(B[9]));
+OR2X2 I5 ( .Y(C[10]), .A(A[10]), .B(B[10]));
+OR2X2 I4 ( .Y(C[11]), .A(A[11]), .B(B[11]));
+OR2X2 I3 ( .Y(C[12]), .A(A[12]), .B(B[12]));
+OR2X2 I2 ( .Y(C[13]), .A(A[13]), .B(B[13]));
+OR2X2 I1 ( .Y(C[14]), .A(A[14]), .B(B[14]));
+OR2X2 I0 ( .Y(C[15]), .A(A[15]), .B(B[15]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module logic ( C, A, B, CODE );
+
+
+
+output [15:0]  C;
+
+input [15:0]  A;
+input [2:0]  CODE;
+input [15:0]  B;
+
+
+wire  [0:15]  net21;
+
+wire  [0:15]  net22;
+
+wire  [0:15]  net17;
+
+wire  [0:15]  net23;
+
+wire  [0:15]  net16;
+
+wire  [0:15]  net19;
+
+wire  [0:15]  net20;
+
+wire  [0:15]  net18;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "logic";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+mux_3_16 I0 ( .zero(net19[0:15]), .C(C[15:0]), .S(CODE[2:0]),
+     .one(net20[0:15]), .two(net21[0:15]), .three(net16[0:15]),
+     .four(net22[0:15]), .five(net17[0:15]), .six(net23[0:15]),
+     .seven(net18[0:15]));
+and_16 I1 ( .C(net17[0:15]), .A(A[15:0]), .B(B[15:0]));
+inv_16 I2 ( .out(net19[0:15]), .in(A[15:0]));
+xor_16 I3 ( .C(net16[0:15]), .A(A[15:0]), .B(B[15:0]));
+or_16 I4 ( .C(net18[0:15]), .A(A[15:0]), .B(B[15:0]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module mux_2x4_16 ( F, A, B, C, D, S );
+
+
+
+output [15:0]  F;
+
+input [1:0]  S;
+input [15:0]  B;
+input [15:0]  D;
+input [15:0]  A;
+input [15:0]  C;
+
+
+wire  [0:15]  net12;
+
+wire  [0:15]  net11;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "mux_2x4_16";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+mux_16 I2 ( .Y(F[15:0]), .S(S[0]), .S0(net12[0:15]), .S1(net11[0:15]));
+mux_16 I1 ( .Y(net11[0:15]), .S(S[1]), .S0(C[15:0]), .S1(D[15:0]));
+mux_16 I0 ( .Y(net12[0:15]), .S(S[1]), .S0(A[15:0]), .S1(B[15:0]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module mux_2x4 ( F, S, one, three, two, zero );
+
+output  F;
+
+input  one, three, two, zero;
+
+input [1:0]  S;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "mux_2x4";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+mux I2 ( .Y(F), .S0(net16), .S1(net14), .S(S[0]));
+mux I1 ( .Y(net14), .S0(one), .S1(three), .S(S[1]));
+mux I0 ( .Y(net16), .S0(zero), .S1(two), .S(S[1]));
+
+endmodule
+
+
+`timescale 1ns / 1ns
+module alu ( C, COUT, VOUT, A, B, CIN, CODE );
+
+output  COUT, VOUT;
+
+input  CIN;
+
+output [15:0]  C;
+
+input [15:0]  B;
+input [15:0]  A;
+input [4:0]  CODE;
+
+
+wire  [0:15]  net1;
+
+wire  [0:15]  net014;
+
+wire  [0:15]  net016;
+
+wire  [0:15]  net015;
+
+
+specify 
+    specparam CDS_LIBNAME  = "Lab2";
+    specparam CDS_CELLNAME = "alu";
+    specparam CDS_VIEWNAME = "schematic";
+endspecify
+
+adder I0 ( .C(net1[0:15]), .VOUT(net2), .COUT(COUT), .A(A[15:0]),
+     .B(B[15:0]), .CODE(CODE[2:0]), .CIN(CIN));
+compare I1 ( .C(net014[0:15]), .A(A[15:0]), .B(B[15:0]),
+     .CODE(CODE[2:0]));
+shift I2 ( .VOUT(net025), .C(net015[0:15]), .A(A[15:0]), .B(B[3:0]),
+     .CODE(CODE[2:0]));
+logic I3 ( .C(net016[0:15]), .A(A[15:0]), .B(B[15:0]),
+     .CODE(CODE[2:0]));
+mux_2x4_16 I4 ( .F(C[15:0]), .A(net016[0:15]), .B(net1[0:15]),
+     .C(net014[0:15]), .D(net015[0:15]), .S(CODE[4:3]));
+mux_2x4 I6 ( .F(VOUT), .S(CODE[4:3]), .one(1'b0),
+     .three(net025), .two(net2), .zero(1'b0));
+
+endmodule
+
+
